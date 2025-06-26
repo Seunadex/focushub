@@ -1,0 +1,36 @@
+<div class="bg-gray-50 flex items-center justify-center mt-50">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+    <h2 class="text-3xl font-extrabold text-center text-purple-600 mb-6">Welcome Back</h2>
+    <p class="text-center text-gray-600 mb-8">Log in to your FocusHub account to continue tracking and collaborating.</p>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+      <div>
+        <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.email_field :email, autofocus: true, required: true, class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" %>
+      </div>
+
+      <div>
+        <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.password_field :password, autocomplete: "current-password", required: true, class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" %>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <%= f.check_box :remember_me, class: "h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded" %>
+          <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-900" %>
+        </div>
+        <div class="text-sm">
+          <%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-medium text-purple-600 hover:text-purple-700" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.submit "Log in", class: "w-full flex justify-center py-2 px-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition" %>
+      </div>
+    <% end %>
+
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600">Don't have an account? <%= link_to "Sign up", new_user_registration_path, class: "font-medium text-purple-600 hover:text-purple-700" %></p>
+    </div>
+  </div>
+</div>
