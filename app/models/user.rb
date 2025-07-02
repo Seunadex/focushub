@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :tasks, dependent: :destroy
+  has_one_attached :avatar
 
   validates_uniqueness_of :email, case_sensitive: false
 

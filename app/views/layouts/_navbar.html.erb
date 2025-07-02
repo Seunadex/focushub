@@ -7,9 +7,16 @@
         <% if user_signed_in? %>
           <div class="flex items-center space-x-4">
 
-            <button id="dropdownUserAvatarButton" data-dropdown-placement="bottom" data-dropdown-toggle="dropdownAvatar" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" type="button">
+            <button id="dropdownUserAvatarButton" data-dropdown-placement="bottom" data-dropdown-toggle="dropdownAvatar" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" type="button">
             <span class="sr-only">Open user menu</span>
-            <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+
+            <% if current_user.avatar.attached? %>
+              <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full mx-auto" %>
+            <% else %>
+              <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xl font-semibold mx-auto">
+                <%= "#{current_user.first_name.first.upcase if current_user.first_name.present?}#{current_user.last_name.first.upcase if current_user.last_name.present?}" %>
+              </div>
+            <% end %>
             </button>
 
             <div id="dropdownAvatar" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
