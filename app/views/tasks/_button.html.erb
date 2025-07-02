@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "new_task" do %>
   <div id="new-task-container">
     <%= link_to "Create New Task", new_task_path, data: { turbo_frame: "new_task" }, id: "create-task-link",
-      class: "bg-purple-600 text-white text-xs font-semibold py-2 px-3 rounded-md" %>
+      class: "bg-purple-600 text-white text-xs font-semibold py-2 px-3 rounded-md antialiased" %>
   </div>
 <% end %>
