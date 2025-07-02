@@ -1,7 +1,7 @@
 <div class="flex min-h-screen bg-gray-100">
   <main class="flex-1 overflow-y-auto p-6">
     <header class="bg-white shadow px-6 py-4 flex items-center justify-between mt-5">
-      <h1 class="text-xl font-semibold"><%= time_based_greeting %>, <%= current_user.email.split('@').first.capitalize %> 👋</h1>
+      <h1 class="text-xl font-semibold"><%= time_based_greeting %>, <%= current_user.first_name %> 👋</h1>
       <div class="flex items-center space-x-4">
         <div class="relative">
           <button class="bg-gray-200 p-2 rounded-full hover:bg-gray-300 hover:cursor-pointer">

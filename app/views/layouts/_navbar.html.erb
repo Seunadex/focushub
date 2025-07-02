@@ -5,11 +5,32 @@
           <a href="/" class="flex-shrink-0 flex items-center text-2xl font-bold text-purple-600">FocusHub</a>
         </div>
         <% if user_signed_in? %>
-        <div class="flex items-center space-x-4">
-          <%= link_to "Log out", destroy_user_session_path,
-            data: { turbo_method: :delete, confirm: "Are you sure?" },
-            class: "px-4 py-2 bg-transparent border border-purple-600 text-purple-600 rounded-4xl hover:bg-purple-50 transition" %>
-        </div>
+          <div class="flex items-center space-x-4">
+
+            <button id="dropdownUserAvatarButton" data-dropdown-placement="bottom" data-dropdown-toggle="dropdownAvatar" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" type="button">
+            <span class="sr-only">Open user menu</span>
+            <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+            </button>
+
+            <div id="dropdownAvatar" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                  <div class="font-semibold"><%= current_user.full_name %></div>
+                  <div class="truncate"><%= current_user.email %></div>
+                </div>
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+                  <li>
+                    <%= link_to "Profile", edit_user_registration_path, class: "block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" %>
+                  </li>
+                </ul>
+                <div class="py-2">
+                  <%= link_to "Sign out", destroy_user_session_path,
+              data: { turbo_method: :delete, confirm: "Are you sure?" },
+              class: "block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition" %>
+                </div>
+            </div>
+
+          </div>
+
         <% else %>
           <div class="flex items-center space-x-4">
             <%= link_to "Sign up", new_user_registration_path, class: "px-4 py-2 bg-purple-600 text-white rounded-4xl hover:bg-purple-700 transition" %>

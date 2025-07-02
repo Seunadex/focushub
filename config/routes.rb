@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users do
+    get "/preferences" => "registrations#edit", :as => "edit_user_registration"
+    put "users" => "registrations#update", :as => "user_registration"
+  end
 
   get "/dashboard", to: "dashboard#show", as: :dashboard
   authenticated :user do

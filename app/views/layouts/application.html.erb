@@ -24,8 +24,10 @@
 
   <body class="bg-gray-50 text-gray-800 leading-normal">
     <%= render "layouts/navbar" %>
-    <main class="flex min-h-screen">
-      <%= render "layouts/sidebar" %>
+    <main class="flex min-h-[90vh] <%= 'justify-center' unless user_signed_in? %>">
+      <% if user_signed_in? %>
+        <%= render "layouts/sidebar" %>
+      <% end %>
       <%= yield %>
     </main>
       <%= render "layouts/footer" %>

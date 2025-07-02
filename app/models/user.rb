@@ -5,4 +5,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :tasks, dependent: :destroy
+
+  validates_uniqueness_of :email, case_sensitive: false
+
+  def full_name
+    "#{first_name} #{last_name}".strip
+  end
 end
