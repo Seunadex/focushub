@@ -1,24 +1,41 @@
-  <div class="bg-gray-100 my-4 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow flex justify-between">
+  <div class="bg-gray-100 my-4 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow flex justify-between transition-all transition-discrete">
     <div class="">
       <div class="flex items-center space-x-2">
-      <input id="inline-checkbox" type="checkbox" value="" class="w-4 h-4 text-purple-600 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-      <h3 class="text-lg font-medium text-purple-700"><%= task.title %></h3>
+        <%= form_with url: complete_task_path(task), method: :patch, data: { turbo_stream: true }, class: "inline" do %>
+          <%= check_box_tag "completed", true, task.completed,
+            id: "inline-checkbox",
+            onchange: "this.form.requestSubmit();",
+            "aria-describedby": "inline-checkbox",
+            class: "w-4 h-4 text-purple-600 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
+          <% end %>
+        <h3 data-task-target="output" class="antialiased text-lg font-medium text-purple-700 <%= task.completed && 'line-through' %>"><%= task.title %></h3>
       </div>
       <p class="text-sm text-gray-600 mt-1">
-        Due Date: <%= task.due_date.strftime("%B %d, %Y") %>
+        Due Date: <%= Date.today == task.due_date ? 'Today' : task.due_date&.strftime("%B %d, %Y") %>
       </p>
     </div>
-    <div class="flex items-center space-x-4">
-    <%= link_to edit_task_path(task), class: "text-blue-600 hover:text-blue-800 mr-4 bg-gray-200 p-2 rounded-full" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M15.232 5.232a2.828 2.828 0 114 4L7 21H3v-4L15.232 5.232z" />
-      </svg>
-    <% end %>
-    <%= button_to task_path(task), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this task?" }, class: "text-red-600 hover:text-red-800 bg-gray-200 p-2 rounded-full" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z" />
-      </svg>
-    <% end %>
+    <div class="flex items-center">
+      <div>
+        <% unless task.completed %>
+          <%= link_to edit_task_path(task), class: "inline-flex items-center justify-center text-blue-600 hover:text-blue-800 mr-3 bg-gray-200 p-2 rounded-full pointer-cursor" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.232 5.232a2.828 2.828 0 114 4L7 21H3v-4L15.232 5.232z" />
+            </svg>
+          <% end %>
+        <% else %>
+          <span class="inline-flex items-center justify-center mr-3 bg-gray-200 p-2 rounded-full text-gray-400 cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.232 5.232a2.828 2.828 0 114 4L7 21H3v-4L15.232 5.232z" />
+            </svg>
+          </span>
+        <% end %>
+      </div>
+      <%= button_to task_path(task), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this task?" }, class: "text-red-600 hover:text-red-800 bg-gray-200 p-2 rounded-full hover:cursor-pointer" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z" />
+        </svg>
+      <% end %>
     </div>
   </div>

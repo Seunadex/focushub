@@ -6,4 +6,13 @@ class Task < ApplicationRecord
   belongs_to :user
 
   validates :title, presence: true, length: { maximum: 100 }
+
+
+  # def completed?
+  #   completed && completed_at.present?
+  # end
+  #
+  def overdue?
+    due_date.present? && due_date < Date.today && !completed
+  end
 end

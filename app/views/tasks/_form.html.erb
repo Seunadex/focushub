@@ -11,7 +11,7 @@
   <% end %>
   <div>
     <%= form.label :title, class: "block mb-1 text-sm font-medium text-gray-900 dark:text-white" %>
-    <%= form.text_field :title, class: "block w-full ps-10 p-2 rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition" %>
+    <%= form.text_field :title, class: "block w-full ps-3 p-2 rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition" %>
   </div>
 
   <div>
@@ -29,8 +29,9 @@
       datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today
       datepicker-format="yyyy-mm-dd"
       type="text"
-      class="block w-full ps-10 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition"
-      placeholder="Select date">
+      class="block w-full ps-8 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition"
+      placeholder="Select date"
+    >
     </div>
   </div>
 
@@ -38,4 +39,4 @@
     <%= form.submit(task.persisted? ? "Update Task" : "Create Task", class: "antialiased inline-flex items-center px-3 py-2 bg-purple-600 text-white text-xs font-semibold cursor-pointer rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition") %>
     <%= link_to "Cancel", task, class: "text-sm" %>
   </div>
-<% end %>.
+<% end %>

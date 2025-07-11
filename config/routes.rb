@@ -15,10 +15,9 @@ Rails.application.routes.draw do
   end
 
   resources :tasks do
-    # collection do
-    #   get :completed, to: "tasks#completed", as: :completed_tasks
-    #   get :incomplete, to: "tasks#incomplete", as: :incomplete_tasks
-    # end
+    member do
+      patch :complete, to: "tasks#complete", as: :complete
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

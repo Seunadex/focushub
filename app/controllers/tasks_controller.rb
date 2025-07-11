@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: [ :edit, :update, :destroy, :show ]
+  before_action :set_task, only: [ :edit, :update, :destroy, :show, :complete ]
   def index
     @tasks = current_user.tasks.order(due_date: :asc)
   end
@@ -17,10 +17,12 @@ class TasksController < ApplicationController
           turbo_stream.prepend("tasks", partial: "tasks/task", locals: { task: @task }),
           turbo_stream.replace("new_task", partial: "tasks/button")
         ] }
+        format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
     else
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/form", locals: { task: @task }) }
+        format.html { render :new }
       end
       flash.now[:alert] = "Error creating task. Please fix the errors below."
       @task.errors.add(:base, "Please fix the errors below.")
@@ -38,6 +40,7 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/task", locals: { task: @task }) }
+        format.html { redirect_to tasks_path, notice: "Task updated successfully." }
       end
     else
       render :edit
@@ -48,6 +51,26 @@ class TasksController < ApplicationController
     @task.destroy
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@task) }
+    end
+  end
+
+  def complete
+    if @task.update(completed: params[:completed])
+      if @task.completed
+        @task.completed_at ||= Time.current
+      else
+        @task.completed_at = nil
+      end
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/task", locals: { task: @task }) }
+        format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
+      end
+    else
+      flash[:alert] = "Error completing task."
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/task", locals: { task: @task }) }
+        format.html { redirect_to tasks_path, alert: "Error completing task." }
+      end
     end
   end
 
