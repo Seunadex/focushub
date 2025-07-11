@@ -14,14 +14,15 @@ class TasksController < ApplicationController
     if @task.save
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
-          turbo_stream.prepend("tasks", partial: "tasks/task", locals: { task: @task }),
-          turbo_stream.replace("new_task", partial: "tasks/button")
+          turbo_stream.append("tasks", partial: "tasks/task", locals: { task: @task }),
+          turbo_stream.replace("new_task", partial: "tasks/button"),
+          turbo_stream.remove("empty_tasks_notice")
         ] }
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
     else
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/form", locals: { task: @task }) }
+        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
         format.html { render :new }
       end
       flash.now[:alert] = "Error creating task. Please fix the errors below."
@@ -50,7 +51,8 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@task) }
+      format.turbo_stream { render turbo_stream: build_destroy_streams }
+      format.html { redirect_to tasks_path, notice: "Task deleted successfully." }
     end
   end
 
@@ -62,13 +64,13 @@ class TasksController < ApplicationController
         @task.completed_at = nil
       end
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/task", locals: { task: @task }) }
+        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
         format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
       end
     else
       flash[:alert] = "Error completing task."
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/task", locals: { task: @task }) }
+        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
         format.html { redirect_to tasks_path, alert: "Error completing task." }
       end
     end
@@ -80,8 +82,19 @@ class TasksController < ApplicationController
   end
 
   def set_task
-    @task ||= current_user.tasks.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Task not found."
+  end
+
+  def turbo_replace_task(task)
+    turbo_stream.replace(task, partial: "tasks/task", locals: { task: task })
+  end
+
+  def build_destroy_streams
+    remaining_tasks = params[:source] == "tasks" ? current_user.tasks.where.not(id: @task.id) : current_user.tasks.where(due_date: Date.current)
+    streams = [ turbo_stream.remove(@task) ]
+    streams << turbo_stream.replace("tasks", partial: "tasks/empty_tasks_notice") if remaining_tasks.empty?
+    streams
   end
 end

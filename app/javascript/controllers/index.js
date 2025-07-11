@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import TaskController from "./task_controller"
 application.register("task", TaskController)
+
+import TurboModalController from "./turbo_modal_controller"
+application.register("turbo-modal", TurboModalController)

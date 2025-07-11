@@ -24,17 +24,17 @@
         <%= turbo_frame_tag "tasks" do %>
           <% if @current_tasks.any? %>
             <% @current_tasks.each do |task| %>
-              <%= turbo_frame_tag dom_id(task) do %>
-                <%= render 'tasks/task', task: task %>
-              <% end %>
+              <%= render 'tasks/task', task: task, source: "dashboard" %>
             <% end %>
           <% else %>
-            <p class="text-gray-500">No tasks for today. Why not create one?</p>
+            <%= turbo_frame_tag "empty_tasks_notice" do %>
+              <%= render "tasks/empty_tasks_notice" %>
+            <% end %>
           <% end %>
-          <div class="flex justify-between items-center pt-4 border-t mt-6">
-            <%= render "tasks/button" %>
-          </div>
         <% end %>
+        <div class="flex justify-between items-center pt-4 border-t mt-6">
+          <%= render "tasks/button" %>
+        </div>
       </div>
 
       <div>
