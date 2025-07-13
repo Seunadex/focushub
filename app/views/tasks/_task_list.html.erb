@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "tasks" do %>
+  <% tasks.each do |task| %>
+    <%= turbo_frame_tag dom_id(task) do %>
+      <%= render 'tasks/task', task: task %>
+    <% end %>
+  <% end %>
+  <% if tasks.empty? %>
+    <div class="text-center text-gray-500 mt-6">
+      <p>No tasks available.</p>
+    </div>
+  <% end %>
+  <span class="text-gray-500 text-sm"><%= pagy_info(pagy).html_safe %></span>
+  <% if pagy.count > Pagy::DEFAULT[:limit] %>
+    <%= tailwind_pagy_nav(pagy) %>
+  <% end %>
+<% end %>

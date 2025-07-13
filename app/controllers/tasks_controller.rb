@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [ :edit, :update, :destroy, :show, :complete ]
   def index
-    @tasks = current_user.tasks.order(due_date: :asc)
+    @pagy, @tasks = pagy(current_user.tasks.order(due_date: :desc))
   end
 
   def new
@@ -12,11 +12,13 @@ class TasksController < ApplicationController
   def create
     @task = current_user.tasks.build(task_params)
     if @task.save
+      pagy, tasks = paginated_tasks
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
           turbo_stream.append("tasks", partial: "tasks/task", locals: { task: @task }),
           turbo_stream.replace("new_task", partial: "tasks/button"),
-          turbo_stream.remove("empty_tasks_notice")
+          turbo_stream.remove("empty_tasks_notice"),
+          turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy })
         ] }
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
@@ -40,7 +42,7 @@ class TasksController < ApplicationController
   def update
     if @task.update(task_params)
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task, partial: "tasks/task", locals: { task: @task }) }
+        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
         format.html { redirect_to tasks_path, notice: "Task updated successfully." }
       end
     else
@@ -92,9 +94,23 @@ class TasksController < ApplicationController
   end
 
   def build_destroy_streams
-    remaining_tasks = params[:source] == "tasks" ? current_user.tasks.where.not(id: @task.id) : current_user.tasks.where(due_date: Date.current)
-    streams = [ turbo_stream.remove(@task) ]
-    streams << turbo_stream.replace("tasks", partial: "tasks/empty_tasks_notice") if remaining_tasks.empty?
+    pagy, tasks = pagy(remaining_tasks)
+    streams = [
+      turbo_stream.remove(@task),
+      turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy })
+    ]
+    streams << turbo_stream.replace("tasks", partial: "tasks/empty_tasks_notice") if tasks.empty?
     streams
+  end
+
+  def remaining_tasks
+    referer_path = URI(request.referer || "").path
+    referer_path.include?("tasks") ? current_user.tasks.where.not(id: @task.id).order(due_date: :desc) : current_user.tasks.where(due_date: Date.current).order(due_date: :asc)
+  end
+
+  def paginated_tasks
+    tasks = remaining_tasks
+    page = (tasks.count.to_f / Pagy::DEFAULT[:limit]).ceil
+    pagy(tasks, page: page)
   end
 end

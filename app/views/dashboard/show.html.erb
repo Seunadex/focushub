@@ -1,8 +1,8 @@
-<div class="flex min-h-screen mx-auto">
+<div class="flex min-h-screen mx-auto bg-gray-200">
   <main class="flex-1 overflow-y-auto p-6">
-    <header class="bg-white shadow px-6 py-4 flex items-center justify-between mt-5">
+    <header class="bg-white dark:bg-gray-800 shadow px-6 py-4 flex items-center justify-between mt-5">
       <div class="flex items-center space-x-4">
-        <h1 class="text-xl font-semibold"><%= time_based_greeting %>, <%= current_user.first_name %></h1>
+        <h1 class="text-xl font-semibold dark:text-white"><%= time_based_greeting %>, <%= current_user.first_name %></h1>
         <h1 class="animate-pulse text-2xl">👋</h1>
       </div>
       <div class="flex items-center space-x-4">
@@ -18,23 +18,19 @@
       </div>
     </header>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-      <div class="mx-full p-6 bg-white rounded-lg shadow-md mt-6">
-        <h2 class="text-2xl font-bold text-gray-700 mb-4">Today's Tasks</h2>
+      <div class="mx-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md mt-6">
+        <h2 class="text-2xl font-bold text-gray-700 dark:text-white mb-4">Today's Tasks</h2>
         <%= turbo_stream_from "tasks_#{current_user.id}" %>
         <%= turbo_frame_tag "tasks" do %>
           <% if @current_tasks.any? %>
-            <% @current_tasks.each do |task| %>
-              <%= render 'tasks/task', task: task, source: "dashboard" %>
-            <% end %>
+            <%= render 'tasks/task_list', tasks: @current_tasks, pagy: @pagy %>
           <% else %>
             <%= turbo_frame_tag "empty_tasks_notice" do %>
               <%= render "tasks/empty_tasks_notice" %>
             <% end %>
           <% end %>
         <% end %>
-        <div class="flex justify-between items-center pt-4 border-t mt-6">
-          <%= render "tasks/button" %>
-        </div>
+        <%= render "tasks/button" %>
       </div>
 
       <div>

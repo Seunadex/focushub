@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include Pagy::Frontend
   def time_based_greeting
     hour = Time.zone.now.hour
 
