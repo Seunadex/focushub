@@ -16,7 +16,6 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
           turbo_stream.append("tasks", partial: "tasks/task", locals: { task: @task }),
-          # turbo_stream.replace("new_task", partial: "tasks/button"),
           turbo_stream.remove("empty_tasks_notice"),
           turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
           turbo_stream.remove("modal")
@@ -68,6 +67,9 @@ class TasksController < ApplicationController
         format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
       end
     else
+       puts "=========Starting task completion process========="
+    puts @task.errors.full_messages
+    puts "=========Task ID: #{@task.id}========="
       flash[:alert] = "Error completing task."
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
@@ -78,7 +80,7 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:title, :due_date)
+    params.require(:task).permit(:title, :due_date, :description, :priority)
   end
 
   def set_task
@@ -103,7 +105,7 @@ class TasksController < ApplicationController
 
   def remaining_tasks
     referer_path = URI(request.referer || "").path
-    referer_path.include?("tasks") ? current_user.tasks.where.not(id: @task.id).order(due_date: :desc) : current_user.tasks.where(due_date: Date.current).order(due_date: :asc)
+    referer_path.include?("tasks") ? current_user.tasks.where.not(id: @task.id).order(due_date: :desc) : current_user.tasks.where(due_date: Date.current).order(due_date: :desc)
   end
 
   def paginated_tasks

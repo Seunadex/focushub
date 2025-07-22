@@ -6,6 +6,15 @@ class Task < ApplicationRecord
   belongs_to :user
 
   validates :title, presence: true, length: { maximum: 100 }
+  validates :due_date, :priority, presence: true
+  validates :priority, inclusion: { in: %w[low medium high], message: "%{value} is not a valid priority" }
+  # validates :completed_at, presence: true, if: :completed
+
+enum :priority, { low: 0, medium: 1, high: 2 }
+
+scope :completed, -> { where(completed: true) }
+scope :completed_today, -> { where(completed: true, due_date: Date.today) }
+scope :today, -> { where(due_date: Date.today) }
 
 
   # def completed?
