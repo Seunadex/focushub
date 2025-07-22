@@ -8,7 +8,6 @@ class Task < ApplicationRecord
   validates :title, presence: true, length: { maximum: 100 }
   validates :due_date, :priority, presence: true
   validates :priority, inclusion: { in: %w[low medium high], message: "%{value} is not a valid priority" }
-  # validates :completed_at, presence: true, if: :completed
 
 enum :priority, { low: 0, medium: 1, high: 2 }
 

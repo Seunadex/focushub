@@ -16,9 +16,9 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
           turbo_stream.append("tasks", partial: "tasks/task", locals: { task: @task }),
-          turbo_stream.remove("empty_tasks_notice"),
           turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
-          turbo_stream.remove("modal")
+          turbo_stream.remove("modal"),
+          turbo_update_task_count
         ] }
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
@@ -63,13 +63,10 @@ class TasksController < ApplicationController
         @task.completed_at = nil
       end
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
+        format.turbo_stream { render turbo_stream: [ turbo_replace_task(@task), turbo_update_task_count ] }
         format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
       end
     else
-       puts "=========Starting task completion process========="
-    puts @task.errors.full_messages
-    puts "=========Task ID: #{@task.id}========="
       flash[:alert] = "Error completing task."
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
@@ -93,13 +90,20 @@ class TasksController < ApplicationController
     turbo_stream.replace(task, partial: "tasks/task", locals: { task: task })
   end
 
+  def turbo_update_task_count
+    turbo_stream.update("completed_today_count", partial: "dashboard/task_count", locals: {
+      completed: current_user.tasks.completed_today.count,
+      total: current_user.tasks.where(due_date: Date.current).count
+    })
+  end
+
   def build_destroy_streams
     pagy, tasks = pagy(remaining_tasks)
     streams = [
       turbo_stream.remove(@task),
-      turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy })
+      turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
+      turbo_update_task_count
     ]
-    streams << turbo_stream.replace("tasks", partial: "tasks/empty_tasks_notice") if tasks.empty?
     streams
   end
 

@@ -20,7 +20,9 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
       <div class="border border-[#778dee] bg-[#e8ecfc] p-5 rounded-lg">
         <span class="font-semibold text-[#778dee]">Tasks today</span>
-        <p class="text-2xl font-bold text-[#1c3fe2]"><%= @completed_tasks_count %>/<%= @current_tasks_count %></p>
+        <p class="text-2xl font-bold text-[#1c3fe2]">
+          <%= render partial: "dashboard/task_count", locals: { completed: @completed_tasks_count, total: @current_tasks_count } %>
+        </p>
       </div>
       <div class="border border-[#e0b084] bg-[#fffaf5] p-5 rounded-lg">
         <span class="font-semibold text-[#e0b084]">
