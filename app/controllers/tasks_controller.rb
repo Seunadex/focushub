@@ -16,19 +16,17 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [
           turbo_stream.append("tasks", partial: "tasks/task", locals: { task: @task }),
-          turbo_stream.replace("new_task", partial: "tasks/button"),
+          # turbo_stream.replace("new_task", partial: "tasks/button"),
           turbo_stream.remove("empty_tasks_notice"),
-          turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy })
+          turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
+          turbo_stream.remove("modal")
         ] }
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
     else
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
         format.html { render :new }
       end
-      flash.now[:alert] = "Error creating task. Please fix the errors below."
-      @task.errors.add(:base, "Please fix the errors below.")
       flash.now[:alert] = @task.errors.full_messages.to_sentence
     end
   end

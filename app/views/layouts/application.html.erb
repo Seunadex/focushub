@@ -22,7 +22,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-gray-50 text-gray-800 leading-normal">
+  <body class="bg-gray-50 text-gray-800 leading-normal relative">
     <%= turbo_frame_tag "modal" %>
     <%= render "layouts/navbar" %>
     <main class="flex min-h-[90vh] <%= 'justify-center' unless user_signed_in? %>">

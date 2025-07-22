@@ -23,4 +23,16 @@ export default class extends Controller {
   close() {
     this.modalTarget.remove();
   }
+
+  closeWithEscape(event) {
+    if (event.key === "Escape") {
+      this.close();
+    }
+  }
+
+  closeWithClickOutside(event) {
+    if (event.target === this.modalTarget) {
+      this.close();
+    }
+  }
 }
