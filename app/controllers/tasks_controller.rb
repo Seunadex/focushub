@@ -56,12 +56,7 @@ class TasksController < ApplicationController
   end
 
   def complete
-    if @task.update(completed: params[:completed])
-      if @task.completed
-        @task.completed_at ||= Time.current
-      else
-        @task.completed_at = nil
-      end
+    if @task.update(completed: params[:completed], completed_at: params[:completed] ? Time.current : nil)
       respond_to do |format|
         format.turbo_stream { render turbo_stream: [ turbo_replace_task(@task), turbo_update_task_count ] }
         format.html { redirect_to dashboard_path, notice: "Task completed successfully." }

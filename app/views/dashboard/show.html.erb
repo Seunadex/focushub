@@ -5,40 +5,51 @@
         <h1 class="text-xl font-semibold text-gray-600 dark:text-white"><%= time_based_greeting %>, <%= current_user.first_name %></h1>
         <h1 class="animate-pulse text-2xl">👋</h1>
       </div>
-      <div class="flex items-center space-x-4">
-        <div class="relative">
-          <button class="bg-gray-200 p-2 rounded-full hover:bg-gray-300 hover:cursor-pointer">
-            <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-          </button>
-        </div>
-        <div class='h-8 w-8 rounded-full'>
-        </div>
-      </div>
     </header>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-      <div class="border border-[#778dee] bg-[#e8ecfc] p-5 rounded-lg">
-        <span class="font-semibold text-[#778dee]">Tasks today</span>
-        <p class="text-2xl font-bold text-[#1c3fe2]">
-          <%= render partial: "dashboard/task_count", locals: { completed: @completed_tasks_count, total: @current_tasks_count } %>
-        </p>
+      <div class="border border-[#778dee] bg-[#e8ecfc] p-5 rounded-lg flex justify-between items-center">
+        <div>
+          <span class="font-semibold text-[#778dee]">Tasks today</span>
+          <p class="text-2xl font-bold text-[#1c3fe2]">
+            <%= render partial: "dashboard/task_count", locals: { completed: @completed_tasks_count, total: @current_tasks_count } %>
+          </p>
+        </div>
+          <%= lucide_icon('square-check-big', class: "h-10 w-10 text-[#778dee]") %>
       </div>
-      <div class="border border-[#e0b084] bg-[#fffaf5] p-5 rounded-lg">
+      <div class="border border-[#e0b084] bg-[#fffaf5] p-5 rounded-lg flex justify-between items-center">
+        <div>
+
         <span class="font-semibold text-[#e0b084]">
           Active habits
         </span>
+        <p class="text-2xl font-bold text-[#e0b084]">
+          0
+        </p>
+        </div>
+        <%= lucide_icon('radar', class: "h-10 w-10 text-[#e0b084]") %>
       </div>
-      <div class="border border-[#bca6e0] bg-[#f9f7fd] p-5 rounded-lg">
-        <span class="font-semibold text-[#bca6e0]">Streaks</span>
+      <div class="border border-[#bca6e0] bg-[#f9f7fd] p-5 rounded-lg flex justify-between items-center">
+        <div>
+          <span class="font-semibold text-[#bca6e0]">Streaks</span>
+          <p class="text-2xl font-bold text-[#bca6e0]">
+            0
+          </p>
+        </div>
+        <%= lucide_icon('trending-up', class: "h-10 w-10 text-[#bca6e0]") %>
       </div>
-      <div class="border border-[#7dcaa7] bg-[#f2fcf7] p-5 rounded-lg text-gray-700">
-        <span class="font-semibold text-[#7dcaa7]">Team activities</span>
+      <div class="border border-[#7dcaa7] bg-[#f2fcf7] p-5 rounded-lg text-gray-700 flex justify-between items-center">
+        <div>
+          <span class="font-semibold text-[#7dcaa7]">Team activities</span>
+          <p class="text-2xl font-bold text-[#7dcaa7]">
+            0
+          </p>
+        </div>
+          <%= lucide_icon('users', class: "h-10 w-10 text-[#7dcaa7]") %>
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
       <div class="mx-full p-6 bg-white dark:bg-gray-800 rounded-lg mt-6 border border-gray-300">
-        <h2 class="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Tasks Due Today</h2>
+        <h2 class="text-2xl font-semibold text-gray-700 dark:text-white mb-4 flex items-center space-x-2"><%= lucide_icon('square-check-big') %> <span>Tasks Due Today</span></h2>
         <%= turbo_stream_from "tasks_#{current_user.id}" %>
         <%= turbo_frame_tag "tasks" do %>
           <% if @current_tasks.any? %>
@@ -54,12 +65,12 @@
 
       <div>
         <div class="mx-full p-6 bg-white rounded-lg space-y-4 mt-6 border border-gray-300">
-          <h2 class="text-2xl font-semibold text-gray-700 mb-2">Habit Streaks</h2>
+          <h2 class="text-2xl font-semibold text-gray-700 mb-2 flex items-center space-x-2"><%= lucide_icon('radar') %> <span>Habit Streaks</span></h2>
           <p class="text-gray-500">Placeholder for the Habit Streaks component (to be implemented).</p>
         </div>
 
         <div class="mx-full p-6 bg-white rounded-lg space-y-4 mt-6 border border-gray-300">
-          <h2 class="text-2xl font-semibold text-gray-700 mb-2">Group Feed</h2>
+          <h2 class="text-2xl font-semibold text-gray-700 mb-2 flex items-center space-x-2"><%= lucide_icon('users') %> <span>Group Feed</span></h2>
           <p class="text-gray-500">Placeholder for the Group Feed component (to be implemented).</p>
         </div>
       </div>
