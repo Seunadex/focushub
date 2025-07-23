@@ -1,3 +1,4 @@
 <%= turbo_stream.replace "task_#{@task.id}" do %>
   <%= render "tasks/task", task: @task %>
 <% end %>
+<%= turbo_stream.update "flash", partial: "shared/flash" %>

@@ -35,7 +35,8 @@ class TasksController < ApplicationController
   def update
     if @task.update(task_params)
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
+        flash.now[:notice] = "Task updated successfully."
+        format.turbo_stream
         format.html { redirect_to tasks_path, notice: "Task updated successfully." }
       end
     else
@@ -83,23 +84,6 @@ class TasksController < ApplicationController
   def turbo_replace_task(task)
     turbo_stream.replace(task, partial: "tasks/task", locals: { task: task })
   end
-
-  # def turbo_update_task_count
-  #   turbo_stream.update("completed_today_count", partial: "dashboard/task_count", locals: {
-  #     completed: current_user.tasks.completed_today.count,
-  #     total: current_user.tasks.where(due_date: Date.current).count
-  #   })
-  # end
-
-  # def build_destroy_streams
-  #   pagy, tasks = pagy(remaining_tasks)
-  #   [
-  #     turbo_stream.remove(@task),
-  #     turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
-  #     turbo_update_task_count,
-  #     turbo_stream.update("flash", partial: "shared/flash")
-  #   ]
-  # end
 
   def remaining_tasks
     referer_path = URI(request.referer || "").path

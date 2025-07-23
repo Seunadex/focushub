@@ -1,18 +1,19 @@
-<% flash.each do |type, message| %>
-  <% if type == "notice" %>
-    <div class="bg-green-500 text-white px-4 py-2 rounded shadow mb-2 flex items-center animate__animated animate__bounceIn">
-      <%= lucide_icon("check-circle") %>
+<div data-controller="flash">
+  <% flash.each do |type, message| %>
+    <% icon, bg_color = case type.to_sym
+      when :notice then ["check-circle", "bg-green-500"]
+      when :alert then ["alert-triangle", "bg-red-500"]
+      else ["info", "bg-yellow-500"]
+    end %>
+
+    <div class="<%= "#{bg_color} text-white px-4 py-2 rounded shadow mb-2 flex items-center animate__animated animate__bounceIn" %>">
+      <%= lucide_icon(icon) %>
       <span class="ml-2"><%= message %></span>
-    </div>
-  <% elsif type == "alert" %>
-    <div class="bg-red-500 text-white px-4 py-2 rounded shadow mb-2 flex items-center">
-      <%= lucide_icon("alert-triangle") %>
-      <span class="ml-2"><%= message %></span>
-    </div>
-  <% else %>
-    <div class="bg-yellow-500 text-white px-4 py-2 rounded shadow mb-2 flex items-center">
-      <%= lucide_icon("info") %>
-      <span class="ml-2"><%= message %></span>
+      <% if type.to_sym == :notice %>
+        <button data-action="click->flash#dismiss" class="ml-5 text-white hover:text-gray-200 cursor-pointer">
+          <%= lucide_icon("x") %>
+        </button>
+      <% end %>
     </div>
   <% end %>
-<% end %>
+</div>
