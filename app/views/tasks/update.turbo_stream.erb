@@ -2,3 +2,8 @@
   <%= render "tasks/task", task: @task %>
 <% end %>
 <%= turbo_stream.update "flash", partial: "shared/flash" %>
+<%= turbo_stream.update "task_info_count", partial: "tasks/task_info_count", locals: {
+  pending_count: current_user.tasks.pending.size,
+  completed_count: current_user.tasks.completed.size,
+  high_priority_count: current_user.tasks.high_priority.size
+} %>

@@ -2,7 +2,18 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [ :edit, :update, :destroy, :show, :complete ]
   def index
-    @pagy, @tasks = pagy(current_user.tasks.order(due_date: :desc))
+    tasks = current_user.tasks
+
+    if params[:status] == "pending"
+      tasks = tasks.pending
+    elsif params[:status] == "completed"
+      tasks = tasks.completed
+    end
+
+    tasks = tasks.where("title LIKE ?", "%#{params[:search]}%") if params[:search].present?
+    tasks = tasks.where(priority: params[:priority]) if params[:priority].present?
+
+    @pagy, @tasks = pagy(tasks.order(due_date: :desc))
   end
 
   def new
@@ -55,9 +66,10 @@ class TasksController < ApplicationController
   end
 
   def complete
-    if @task.update(completed: params[:completed], completed_at: params[:completed] ? Time.current : nil)
+    is_completed = ActiveModel::Type::Boolean.new.cast(params[:completed])
+    if @task.update(completed: is_completed, completed_at: is_completed ? Time.current : nil)
       respond_to do |format|
-        flash.now[:notice] = params[:completed] ? "Good work!, Task completed successfully." : "Task marked as incomplete."
+        flash.now[:notice] = is_completed ? "Good work!, Task completed successfully." : "Task marked as incomplete."
         format.turbo_stream
         format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
       end
@@ -93,7 +105,7 @@ class TasksController < ApplicationController
   def paginated_tasks
     @paginated_tasks ||= begin
       tasks = remaining_tasks
-      page = (tasks.count.to_f / Pagy::DEFAULT[:limit]).ceil
+      page = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
       pagy(tasks, page: page)
     end
   end
