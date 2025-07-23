@@ -1,2 +1,8 @@
-<%= turbo_stream.replace "new_task", partial: "tasks/form", locals: { task: Task.new } %>
 <%= turbo_stream.append "tasks", partial: "tasks/task", locals: { task: @task } %>
+<%= turbo_stream.replace "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy } %>
+<%= turbo_stream.remove "modal" %>
+<%= turbo_stream.update "completed_today_count", partial: "dashboard/task_count", locals: {
+  completed: current_user.tasks.completed_today.count,
+  total: current_user.tasks.due_today.count
+} %>
+<%= turbo_stream.update "flash", partial: "shared/flash" %>

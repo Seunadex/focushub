@@ -1,4 +1,7 @@
-<%= turbo_stream.remove "task_#{@task.id}" do %>
-  <%= render "tasks/task", task: @task %>
-<% end %>
+<%= turbo_stream.remove "task_#{@task.id}" %>
+<%= turbo_stream.replace "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy } %>
+<%= turbo_stream.update "completed_today_count", partial: "dashboard/task_count", locals: {
+  completed: current_user.tasks.completed_today.count,
+  total: current_user.tasks.due_today.count
+} %>
 <%= turbo_stream.update "flash", partial: "shared/flash" %>

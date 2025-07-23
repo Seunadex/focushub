@@ -12,8 +12,8 @@ class Task < ApplicationRecord
 enum :priority, { low: 0, medium: 1, high: 2 }
 
 scope :completed, -> { where(completed: true) }
-scope :completed_today, -> { where(completed: true, due_date: Date.today) }
-scope :today, -> { where(due_date: Date.today) }
+scope :completed_today, -> { where(completed: true, due_date: Date.current) }
+scope :due_today, -> { where(due_date: Date.current) }
 
 
   # def completed?
