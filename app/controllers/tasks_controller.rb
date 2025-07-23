@@ -18,9 +18,11 @@ class TasksController < ApplicationController
           turbo_stream.append("tasks", partial: "tasks/task", locals: { task: @task }),
           turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
           turbo_stream.remove("modal"),
-          turbo_update_task_count
+          turbo_update_task_count,
+          turbo_stream.update("flash", partial: "shared/flash")
         ] }
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
+        flash.now[:notice] = "Task created successfully."
       end
     else
       respond_to do |format|
@@ -50,7 +52,10 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: build_destroy_streams }
+      flash.now[:notice] = "Task deleted successfully."
+      format.turbo_stream do
+        render turbo_stream: build_destroy_streams
+      end
       format.html { redirect_to tasks_path, notice: "Task deleted successfully." }
     end
   end
@@ -58,12 +63,13 @@ class TasksController < ApplicationController
   def complete
     if @task.update(completed: params[:completed], completed_at: params[:completed] ? Time.current : nil)
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: [ turbo_replace_task(@task), turbo_update_task_count ] }
+        flash.now[:notice] = params[:completed] ? "Good work!, Task completed successfully." : "Task marked as incomplete."
+        format.turbo_stream { render turbo_stream: [ turbo_replace_task(@task), turbo_update_task_count, turbo_stream.update("flash", partial: "shared/flash") ] }
         format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
       end
     else
-      flash[:alert] = "Error completing task."
       respond_to do |format|
+        flash.now[:alert] = "Error completing task."
         format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
         format.html { redirect_to tasks_path, alert: "Error completing task." }
       end
@@ -97,7 +103,8 @@ class TasksController < ApplicationController
     streams = [
       turbo_stream.remove(@task),
       turbo_stream.replace("tasks", partial: "tasks/task_list", locals: { tasks: tasks, pagy: pagy }),
-      turbo_update_task_count
+      turbo_update_task_count,
+      turbo_stream.update("flash", partial: "shared/flash")
     ]
     streams
   end
