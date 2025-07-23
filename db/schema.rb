@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_22_164457) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_23_152940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_22_164457) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "habit_completions", force: :cascade do |t|
+    t.bigint "habit_id", null: false
+    t.date "completed_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["habit_id"], name: "index_habit_completions_on_habit_id"
+  end
+
+  create_table "habits", force: :cascade do |t|
+    t.string "title"
+    t.string "frequency", default: "daily"
+    t.text "description"
+    t.integer "target", default: 1, null: false
+    t.integer "streak", default: 0
+    t.boolean "active", default: true
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_habits_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -75,5 +96,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_22_164457) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "habit_completions", "habits"
+  add_foreign_key "habits", "users"
   add_foreign_key "tasks", "users"
 end

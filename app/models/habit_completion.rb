@@ -1,0 +1,2 @@
+class HabitCompletion < ApplicationRecord
+end
