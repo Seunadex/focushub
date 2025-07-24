@@ -23,13 +23,13 @@
       <div class="flex items-center space-x-2 absolute right-4 top-4">
         <% if task.priority.present? %>
           <% priority_color = case task.priority
-            when 'high' then 'bg-red-100 text-red-600'
-            when 'medium' then 'bg-yellow-100 text-yellow-700'
+            when 'high' then 'bg-red-500 text-white'
+            when 'medium' then 'bg-yellow-500 text-white'
             when 'low' then 'bg-slate-100 text-gray-600'
             else 'bg-gray-100 text-gray-600'
           end %>
-          <span class="sm:text-xs text-sm font-medium px-4 py-1 rounded-3xl flex justify-between items-center <%= priority_color %>">
-            <%= lucide_icon('flag', class: "h-4 w-4 mr-1") %> <%= task.priority %>
+          <span class="sm:text-xs text-sm font-medium px-2 py-1 rounded-3xl flex justify-between items-center <%= priority_color %>">
+            <%= lucide_icon('flag', class: "h-3 w-4") %> <%= task.priority %>
           </span>
         <% end %>
       </div>
@@ -45,7 +45,7 @@
       </div>
       <div class="flex items-center space-x-1">
         <% unless task.completed %>
-          <%= link_to edit_task_path(task), class: "p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-700" do %>
+          <%= link_to edit_task_path(task), data: { turbo_frame: "modal" }, class: "p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-700" do %>
             <%= lucide_icon('square-pen', class: "h-5 w-5") %>
           <% end %>
         <% end %>

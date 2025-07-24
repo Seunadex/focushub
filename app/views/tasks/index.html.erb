@@ -7,7 +7,46 @@
     <%= render "tasks/button" %>
   </div>
 
-  <%= render partial: "tasks/task_info_count", locals: { pending_count: @tasks.pending.size, completed_count: @tasks.completed.size, high_priority_count: @tasks.high_priority.size } %>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center space-x-3 mb-4">
+        <%= lucide_icon("clock", class: "w-6 h-6 text-gray-600") %>
+        <p class="text-gray-600 font-semibold uppercase tracking-wide text-sm">Pending Tasks</p>
+      </div>
+      <p class="text-blue-600 font-bold text-4xl">
+        <%= turbo_frame_tag "pending_count" do %>
+          <%= @tasks.pending.size %>
+        <% end %>
+      </p>
+      <p class="text-gray-500 text-sm">Tasks remaining</p>
+    </div>
+
+    <div class="border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center space-x-3 mb-4">
+        <%= lucide_icon("circle-check-big", class: "w-6 h-6 text-gray-600") %>
+        <p class="text-gray-600 font-semibold uppercase tracking-wide text-sm">Completed</p>
+      </div>
+      <p class="text-green-600 font-bold text-4xl">
+        <%= turbo_frame_tag "completed_count" do %>
+          <%= @tasks.completed.size %>
+        <% end %>
+      </p>
+      <p class="text-gray-500 text-sm">Tasks done</p>
+    </div>
+
+    <div class="border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-center space-x-3 mb-4">
+        <%= lucide_icon("circle-alert", class: "w-6 h-6 text-gray-600") %>
+        <p class="text-gray-600 font-semibold uppercase tracking-wide text-sm">High Priority</p>
+      </div>
+      <p class="text-red-600 font-bold text-4xl">
+        <%= turbo_frame_tag "high_priority_count" do %>
+          <%= @tasks.high_priority.size %>
+        <% end %>
+      </p>
+      <p class="text-gray-500 text-sm">Urgent tasks</p>
+    </div>
+  </div>
 
   <%= turbo_frame_tag "task_filters" do %>
     <%= form_with url: tasks_path, method: :get, local: false, class: "my-6" do %>

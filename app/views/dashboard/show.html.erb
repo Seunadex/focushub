@@ -50,9 +50,7 @@
       <div class="mx-full p-6 bg-white dark:bg-gray-800 rounded-lg mt-6 border border-gray-300">
         <h2 class="text-2xl font-semibold text-gray-700 dark:text-white mb-4 flex items-center space-x-2"><%= lucide_icon('square-check-big') %> <span>Tasks Due Today</span></h2>
         <%= turbo_stream_from "tasks_#{current_user.id}" %>
-        <%= turbo_frame_tag "tasks" do %>
-          <%= render 'tasks/task_list', tasks: @current_tasks, pagy: @pagy %>
-        <% end %>
+        <%= render 'tasks/task_list', tasks: @current_tasks, pagy: @pagy %>
         <%= render "tasks/button" %>
       </div>
 
