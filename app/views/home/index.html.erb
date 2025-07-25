@@ -1,50 +1,50 @@
-<div class="flex flex-col min-h-[calc(100vh-4rem)]">
+<div class="flex flex-col min-h-[calc(100vh-4rem)] dark:bg-gray-900">
   <main class="flex-grow">
-    <header class="bg-white">
-    <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 text-center transition-opacity duration-1000 ease-out animate-fadeIn">
-      <h1 class="text-5xl font-extrabold text-gray-900 mb-6">Collaborative Task &amp; Habit Tracking</h1>
-      <p class="text-xl text-gray-600 mb-8">Join groups, build streaks, and stay motivated with real-time updates.</p>
-      <%= link_to "Get Started Free", new_user_registration_path, class: "px-8 py-4 bg-purple-600 text-white text-lg rounded-2xl hover:bg-purple-700 transition" %>
-    </div>
+    <header class="bg-white dark:bg-gray-800">
+      <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 text-center transition-opacity duration-1000 ease-out animate-fadeIn">
+        <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white mb-6">Collaborative Task &amp; Habit Tracking</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">Join groups, build streaks, and stay motivated with real-time updates.</p>
+        <%= link_to "Get Started Free", new_user_registration_path, class: "px-8 py-4 bg-purple-600 text-white text-lg rounded-2xl hover:bg-purple-700 transition" %>
+      </div>
     </header>
 
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-gray-50 dark:bg-gray-800">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div class="text-center transform transition duration-700 hover:scale-105">
             <div class="text-4xl mb-4">✅</div>
-            <h3 class="text-2xl font-semibold mb-2">Tasks & Habits</h3>
-            <p class="text-gray-600">Manage one-time tasks and recurring habits in one unified dashboard.</p>
+            <h3 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">Tasks & Habits</h3>
+            <p class="text-gray-600 dark:text-gray-300">Manage one-time tasks and recurring habits in one unified dashboard.</p>
           </div>
           <div class="text-center transform transition duration-700 hover:scale-105">
             <div class="text-4xl mb-4">👥</div>
-            <h3 class="text-2xl font-semibold mb-2">Accountability Groups</h3>
-            <p class="text-gray-600">Form small groups, share progress, and keep each other on track.</p>
+            <h3 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">Accountability Groups</h3>
+            <p class="text-gray-600 dark:text-gray-300">Form small groups, share progress, and keep each other on track.</p>
           </div>
           <div class="text-center transform transition duration-700 hover:scale-105">
             <div class="text-4xl mb-4">🚀</div>
-            <h3 class="text-2xl font-semibold mb-2">Real-Time Updates</h3>
-            <p class="text-gray-600">See live updates with Turbo Streams—no page reloads needed.</p>
+            <h3 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">Real-Time Updates</h3>
+            <p class="text-gray-600 dark:text-gray-300">See live updates with Turbo Streams—no page reloads needed.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white dark:bg-gray-900">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <blockquote class="italic text-gray-700 animate-fadeIn transition-opacity duration-1000 delay-300">
+        <blockquote class="italic text-gray-700 dark:text-gray-300 animate-fadeIn transition-opacity duration-1000 delay-300">
           “FocusHub transformed how our team stays accountable. The real-time feed keeps us motivated every day!”
         </blockquote>
-        <footer class="mt-4 text-gray-500">— Alex Johnson, Product Manager</footer>
+        <footer class="mt-4 text-gray-500 dark:text-gray-400">— Alex Johnson, Product Manager</footer>
       </div>
     </section>
 
-    <section class="py-12 bg-purple-600">
+    <section class="py-12 bg-purple-600 dark:bg-purple-700">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white transform transition duration-700 ease-in-out hover:scale-105">
         <h2 class="text-3xl font-bold mb-4">Ready to Boost Your Productivity?</h2>
         <p class="text-lg mb-6">Start tracking your tasks and habits with your team today.</p>
-        <%= link_to "Create Your Free Account", new_user_registration_path, class: "px-6 py-3 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 transition" %>
+        <%= link_to "Create Your Free Account", new_user_registration_path, class: "px-6 py-3 bg-white text-purple-600 font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-200 transition" %>
       </div>
     </section>
-    </main>
-  </div>
+  </main>
+</div>

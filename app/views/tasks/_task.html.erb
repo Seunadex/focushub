@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(task) do %>
-  <div class="border border-gray-300 border-s-5 border-l-[#bbc6f7] rounded-xl p-5 mb-4 hover:shadow-lg transition group bg-white hover:border-l-[#1c3fe2] relative">
+  <div class="border border-gray-300 border-s-5 border-l-[#bbc6f7] rounded-xl p-5 mb-4 hover:shadow-lg transition group bg-white hover:border-l-[#1c3fe2] relative dark:hover:border-l-white dark:bg-transparent dark:border-gray-600">
     <div class="flex justify-between items-start">
       <div class="flex items-start space-x-3">
         <div>
@@ -9,14 +9,14 @@
             <%= check_box_tag "completed", true, task.completed,
               id: "inline-checkbox-#{task.id}",
               onchange: "this.form.requestSubmit();",
-              class: "w-4 h-4 rounded-full text-green-600 border-gray-300 checked:bg-green-600" %>
+              class: "w-4 h-4 rounded-full text-green-600 border-gray-300 checked:bg-green-600 dark:bg-transparent" %>
           <% end %>
         </div>
         <div>
-          <h3 class="text-md font-semibold text-gray-800 <%= 'line-through text-gray-400' if task.completed %>">
+          <h3 class="text-md font-semibold text-gray-800 <%= 'line-through text-gray-400' if task.completed %> dark:text-white">
             <%= task.title %>
           </h3>
-          <p class="text-sm font-medium text-gray-500 mt-1">
+          <p class="text-sm font-normal text-gray-500 mt-1 dark:text-gray-400">
             <%= task.description %>
           </p>
         </div>
