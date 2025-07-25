@@ -4,11 +4,12 @@
       <div class="flex items-start space-x-3">
         <div>
           <%= form_with url: complete_task_path(task), method: :patch, data: { turbo_stream: true }, class: "inline" do %>
-          <%= hidden_field_tag "completed", false %>
+            <%= hidden_field_tag "source", local_assigns[:source] %>
+            <%= hidden_field_tag "completed", false %>
             <%= check_box_tag "completed", true, task.completed,
               id: "inline-checkbox",
               onchange: "this.form.requestSubmit();",
-              class: "w-4 h-4 rounded-full text-green-600 focus:ring-2 border-gray-300 checked:bg-green-600" %>
+              class: "w-4 h-4 rounded-full text-green-600 border-gray-300 checked:bg-green-600" %>
           <% end %>
         </div>
         <div>

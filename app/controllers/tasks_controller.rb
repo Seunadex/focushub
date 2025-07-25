@@ -13,7 +13,7 @@ class TasksController < ApplicationController
     tasks = tasks.where("title LIKE ?", "%#{params[:search]}%") if params[:search].present?
     tasks = tasks.where(priority: params[:priority]) if params[:priority].present?
 
-    @pagy, @tasks = pagy(tasks.order(due_date: :desc))
+    @pagy, @tasks = pagy(tasks.order(due_date: :desc), limit: 15)
   end
 
   def new
@@ -74,8 +74,27 @@ class TasksController < ApplicationController
 
   def complete
     result = TaskManager::Complete.new(task: @task, completed: params[:completed]).call
+
     respond_to do |format|
       if result.success?
+
+        # Update the task list based on the source
+        source = params[:source] || ""
+        tasks = case source
+        when "dashboard"
+          current_user.tasks.due_today.order(due_date: :desc)
+        when "pending"
+          current_user.tasks.pending.order(due_date: :desc)
+        when "completed"
+          current_user.tasks.completed.order(due_date: :desc)
+        else
+          current_user.tasks.order(due_date: :desc)
+        end
+
+        page = [ (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil, 1 ].max
+        @pagy, @tasks = pagy(tasks, page: page)
+        @source = source
+
         flash.now[:notice] = params[:completed] == "true" ? "Good work!, Task completed successfully." : "Task marked as incomplete."
         format.turbo_stream
         format.html { redirect_to dashboard_path, notice: flash.now[:notice] }

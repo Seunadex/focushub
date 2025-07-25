@@ -3,6 +3,6 @@ class DashboardController < ApplicationController
   def show
     @current_tasks_count = current_user.tasks.due_today.size
     @completed_tasks_count = current_user.tasks.completed_today.size
-    @pagy, @current_tasks = pagy(current_user.tasks.due_today.order(due_date: :desc))
+    @pagy, @current_tasks = pagy(current_user.tasks.due_today.order(due_date: :desc), limit: 5)
   end
 end

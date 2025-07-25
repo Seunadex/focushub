@@ -75,6 +75,8 @@
         <%= link_to "Completed", tasks_path(status: 'completed'), data: { turbo_frame: "task_list" }, class: "whitespace-nowrap py-2 px-1 font-semibold text-md m-2 #{params[:status] == 'completed' ? 'bg-white rounded-md' : 'text-gray-500 hover:text-gray-700'}" %>
       </nav>
     </div>
-      <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy %>
+    <%= turbo_frame_tag "task_list_content" do %>
+      <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: params[:status] %>
+    <% end %>
   <% end %>
 </div>

@@ -1,16 +1,27 @@
 <%= turbo_frame_tag "tasks" do %>
-  <div class="<%= 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3' if controller_name == 'tasks' %>">
+  <div class="<%= 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3' unless source == 'dashboard' %>">
     <% tasks.each do |task| %>
-      <%= render 'tasks/task', task: task %>
+      <%= render 'tasks/task', task: task, source: local_assigns[:source] %>
     <% end %>
   </div>
   <% if tasks.empty? %>
     <div class="text-center text-gray-500 mt-6">
-      <p>No tasks available.</p>
+      <p class="text-gray-500">
+        <% case local_assigns[:source] %>
+        <% when 'dashboard' %>
+          <span>No tasks available for today.</span>
+        <% when 'completed' %>
+          <span>No completed tasks found.</span>
+        <% when 'pending' %>
+          <span>No pending tasks available.</span>
+        <% else %>
+          <span>No tasks available.</span>
+        <% end %>
+      </p>
     </div>
   <% end %>
   <span class="text-gray-500 text-sm"><%= pagy_info(pagy).html_safe %></span>
-  <% if pagy.count > Pagy::DEFAULT[:limit] %>
+  <% if pagy.pages > 1 %>
     <%= tailwind_pagy_nav(pagy) %>
   <% end %>
 <% end %>

@@ -1,5 +1,5 @@
 <% current_user_tasks = current_user.tasks %>
-<%= turbo_stream.replace "task_#{@task.id}", partial: "tasks/task", locals: { task: @task } %>
+<%#= turbo_stream.replace "task_#{@task.id}", partial: "tasks/task", locals: { task: @task } %>
 <%= turbo_stream.update "completed_today_count", partial: "dashboard/task_count", locals: {
   completed: current_user_tasks.completed_today.size,
   total: current_user_tasks.due_today.size
@@ -10,4 +10,18 @@
 <% end %>
 <%= turbo_stream.update "completed_count" do %>
   <%= current_user_tasks.completed.size %>
+<% end %>
+
+<% if @source == "pending" || @source == "completed" %>
+  <% unless (@source == 'pending' && !@task.completed?) || (@source == 'completed' && @task.completed?) %>
+    <%= turbo_stream.remove "task_#{@task.id}" %>
+  <% end %>
+
+  <%= turbo_stream.update "task_list_content" do %>
+    <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: @source %>
+  <% end %>
+<% else %>
+ <%= turbo_stream.replace "task_#{@task.id}" do %>
+    <%= render 'tasks/task', task: @task, source: @source %>
+  <% end %>
 <% end %>
