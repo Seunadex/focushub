@@ -21,8 +21,9 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = current_user.tasks.build(task_params)
-    if @task.save
+    result = TaskManager::Create.new(user: current_user, params: task_params).call
+    if result.success?
+      @task = result.value
       @pagy, @tasks = paginated_tasks
       flash.now[:notice] = "Task created successfully."
       respond_to do |format|
@@ -30,7 +31,7 @@ class TasksController < ApplicationController
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
     else
-      flash.now[:alert] = @task.errors.full_messages.to_sentence
+      flash.now[:alert] = result.error
       respond_to do |format|
         format.html { render :new }
       end
@@ -44,40 +45,44 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
+    result = TaskManager::Update.new(task: @task, params: task_params).call
+    if result.success?
       respond_to do |format|
         flash.now[:notice] = "Task updated successfully."
         format.turbo_stream
         format.html { redirect_to tasks_path, notice: "Task updated successfully." }
       end
     else
+      flash.now[:alert] = result.error
       render :edit
     end
   end
 
   def destroy
-    @task.destroy
+    result = TaskManager::Destroy.new(task: @task).call
     @pagy, @tasks = paginated_tasks
     respond_to do |format|
-      flash.now[:notice] = "Task deleted successfully."
+      if result.success?
+        flash.now[:notice] = "Task deleted successfully."
+      else
+        flash.now[:alert] = result.error
+      end
       format.turbo_stream
-      format.html { redirect_to tasks_path, notice: "Task deleted successfully." }
+      format.html { redirect_to tasks_path, notice: flash.now[:notice] }
     end
   end
 
   def complete
-    is_completed = ActiveModel::Type::Boolean.new.cast(params[:completed])
-    if @task.update(completed: is_completed, completed_at: is_completed ? Time.current : nil)
-      respond_to do |format|
-        flash.now[:notice] = is_completed ? "Good work!, Task completed successfully." : "Task marked as incomplete."
+    result = TaskManager::Complete.new(task: @task, completed: params[:completed]).call
+    respond_to do |format|
+      if result.success?
+        flash.now[:notice] = params[:completed] == "true" ? "Good work!, Task completed successfully." : "Task marked as incomplete."
         format.turbo_stream
-        format.html { redirect_to dashboard_path, notice: "Task completed successfully." }
-      end
-    else
-      respond_to do |format|
-        flash.now[:alert] = "Error completing task."
+        format.html { redirect_to dashboard_path, notice: flash.now[:notice] }
+      else
+        flash.now[:alert] = result.error
         format.turbo_stream { render turbo_stream: turbo_replace_task(@task) }
-        format.html { redirect_to tasks_path, alert: "Error completing task." }
+        format.html { redirect_to tasks_path, alert: result.error }
       end
     end
   end
