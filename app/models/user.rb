@@ -4,8 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :tasks, dependent: :destroy
   has_one_attached :avatar
+  has_many :tasks, dependent: :destroy
+  has_many :habits, dependent: :destroy
 
   validates_uniqueness_of :email, case_sensitive: false
 
