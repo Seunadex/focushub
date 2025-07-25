@@ -1,6 +1,6 @@
 <% current_user_tasks = current_user.tasks%>
-<%= turbo_stream.remove "task_#{@task.id}" %>
-<%= turbo_stream.replace "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: "" } %>
+<%#= turbo_stream.remove "task_#{@task.id}" %>
+<%#= turbo_stream.replace "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: "" } %>
 <%= turbo_stream.update "completed_today_count", partial: "dashboard/task_count", locals: {
   completed: current_user_tasks.completed_today.size,
   total: current_user_tasks.due_today.size
@@ -15,3 +15,9 @@
 <%= turbo_stream.update "completed_count" do %>
   <%= current_user_tasks.completed.size %>
 <% end %>
+
+
+    <%= turbo_stream.remove "task_#{@task.id}" %>
+<%= turbo_stream.update "task_list_content" do %>
+    <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: @source %>
+  <% end %>

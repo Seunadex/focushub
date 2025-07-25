@@ -60,9 +60,28 @@ class TasksController < ApplicationController
 
   def destroy
     result = TaskManager::Destroy.new(task: @task).call
-    @pagy, @tasks = paginated_tasks
+    puts "==============START==================="
+    puts params.inspect
+    puts "==============END==================="
+    # @pagy, @tasks = paginated_tasks
     respond_to do |format|
       if result.success?
+        source = params[:source] || ""
+        tasks = case source
+        when "dashboard"
+          current_user.tasks.due_today.order(due_date: :desc)
+        when "pending"
+          current_user.tasks.pending.order(due_date: :desc)
+        when "completed"
+          current_user.tasks.completed.order(due_date: :desc)
+        else
+          current_user.tasks.order(due_date: :desc)
+        end
+
+        page = [ (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil, 1 ].max
+        @pagy, @tasks = pagy(tasks, page: page)
+        @source = source
+
         flash.now[:notice] = "Task deleted successfully."
       else
         flash.now[:alert] = result.error
@@ -77,18 +96,17 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if result.success?
-
         # Update the task list based on the source
         source = params[:source] || ""
         tasks = case source
         when "dashboard"
           current_user.tasks.due_today.order(due_date: :desc)
         when "pending"
-          current_user.tasks.pending.order(due_date: :desc)
+          current_user.tasks.pending.where.not(id: @task.id).order(due_date: :desc)
         when "completed"
-          current_user.tasks.completed.order(due_date: :desc)
+          current_user.tasks.completed.where.not(id: @task.id).order(due_date: :desc)
         else
-          current_user.tasks.order(due_date: :desc)
+          current_user.tasks.where.not(id: @task.id).order(due_date: :desc)
         end
 
         page = [ (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil, 1 ].max
