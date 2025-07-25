@@ -3,17 +3,19 @@ class TasksController < ApplicationController
   before_action :set_task, only: [ :edit, :update, :destroy, :show, :complete ]
   def index
     tasks = current_user.tasks
-
-    if params[:status] == "pending"
-      tasks = tasks.pending
-    elsif params[:status] == "completed"
-      tasks = tasks.completed
-    end
-
-    tasks = tasks.where("title LIKE ?", "%#{params[:search]}%") if params[:search].present?
+    tasks = tasks.pending if params[:status] == "pending"
+    tasks = tasks.completed if params[:status] == "completed"
+    tasks = tasks.where("LOWER(title) LIKE ?", "%#{params[:search].downcase}%") if params[:search].present?
     tasks = tasks.where(priority: params[:priority]) if params[:priority].present?
 
     @pagy, @tasks = pagy(tasks.order(due_date: :desc), limit: 15)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("task_list_content", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: params[:status] })
+      end
+      format.html
+    end
   end
 
   def new
