@@ -14,7 +14,7 @@
 
       <div>
         <%= form.label :title, class: "block mb-1 text-sm font-medium text-gray-900 dark:text-white" %>
-        <%= form.text_field :title, class: "block w-full ps-3 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition" %>
+        <%= form.text_field :title, required: true, class: "block w-full ps-3 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition" %>
       </div>
       <div>
         <%= form.label :description, class: "block mb-1 text-sm font-medium text-gray-900 dark:text-white" %>
@@ -38,6 +38,7 @@
             type="text"
             class="block w-full ps-8 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition"
             placeholder="Select date"
+            required
           >
         </div>
       </div>

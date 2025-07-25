@@ -48,12 +48,14 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
       <div class="mx-full p-6 bg-white dark:bg-gray-800 rounded-lg mt-6 border border-gray-300">
-        <h2 class="text-2xl font-semibold text-gray-700 dark:text-white mb-4 flex items-center space-x-2"><%= lucide_icon('square-check-big') %> <span>Tasks Due Today</span></h2>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-semibold text-gray-700 dark:text-white flex items-center space-x-2"><%= lucide_icon('square-check-big') %> <span>Tasks Due Today</span></h2>
+          <%= render "tasks/button" %>
+        </div>
         <%= turbo_stream_from "tasks_#{current_user.id}" %>
         <%= turbo_frame_tag "task_list_content" do %>
           <%= render 'tasks/task_list', tasks: @current_tasks, pagy: @pagy, source: 'dashboard' %>
         <% end %>
-        <%= render "tasks/button" %>
       </div>
 
       <div>

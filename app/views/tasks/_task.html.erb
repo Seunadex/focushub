@@ -7,7 +7,7 @@
             <%= hidden_field_tag "source", local_assigns[:source] %>
             <%= hidden_field_tag "completed", false %>
             <%= check_box_tag "completed", true, task.completed,
-              id: "inline-checkbox",
+              id: "inline-checkbox-#{task.id}",
               onchange: "this.form.requestSubmit();",
               class: "w-4 h-4 rounded-full text-green-600 border-gray-300 checked:bg-green-600" %>
           <% end %>
