@@ -1,0 +1,12 @@
+<%= turbo_frame_tag "habits" do %>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <% @habits.each do |habit| %>
+    <%= render 'habits/habit', habit: habit %>
+  <% end %>
+  </div>
+  <% if @habits.empty? %>
+    <div class="text-center text-gray-500 mt-6">
+      <p class="text-gray-500">No habits found.</p>
+    </div>
+  <% end %>
+<% end %>
