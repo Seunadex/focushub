@@ -2,8 +2,11 @@ class HabitsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @habits = current_user.habits.order(created_at: :desc)
-    @pagy, @habits = pagy(@habits, limit: 15)
+    habits = current_user.habits
+    habits = habits.active if params[:active] == "true"
+    habits = habits.archived if params[:active] == "false"
+    habits = habits.order(created_at: :desc)
+    @pagy, @habits = pagy(habits, limit: 15)
 
     respond_to do |format|
       format.turbo_stream do

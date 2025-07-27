@@ -23,7 +23,7 @@
       <div class="border border-[#e0b084] dark:border-[#b97a3d] bg-[#fffaf5] dark:bg-[#3b2f25] p-3 sm:p-5 rounded-lg flex justify-between items-center">
         <div>
           <span class="font-semibold text-[#e0b084] dark:text-[#f2c089]">Active habits</span>
-          <p class="text-2xl font-bold text-[#e0b084] dark:text-white"><%= @habits.size %></p>
+          <p class="text-2xl font-bold text-[#e0b084] dark:text-white"><%= @active_habits.size %></p>
         </div>
         <%= lucide_icon('radar', class: "sm:h-10 sm:w-10 h-7 w-7 text-[#e0b084] dark:text-[#f2c089]") %>
       </div>
@@ -65,7 +65,7 @@
             <%= lucide_icon('radar') %> <span>Habit Streaks</span>
           </h2>
           <%= turbo_frame_tag "habit_streaks_content" do %>
-            <%= render partial: "habits/habit_list", locals: { habits: @habits, page: "dashboard" } %>
+            <%= render "habits/habit_list", habits: @active_habits, page: "dashboard" %>
           <% end %>
         </div>
 
