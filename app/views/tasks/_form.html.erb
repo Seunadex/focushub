@@ -1,5 +1,5 @@
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/70" data-controller="turbo-modal" data-turbo-modal-target="modal" data-action="keyup@window->turbo-modal#closeWithEscape click@window->turbo-modal#closeWithClickOutside">
-  <div role="dialog" aria-modal="true" class="w-full max-w-lg mx-auto bg-white p-6 rounded-lg shadow-xl transition-all">
+  <div role="dialog" aria-modal="true" class="w-4/5 sm:w-full max-w-lg mx-auto bg-white p-6 rounded-lg shadow-xl transition-all">
     <h1 class="text-gray-600 mb-4">New Task</h1>
     <%= form_with model: task, local: false, class: "space-y-6" do |form| %>
       <% if task&.errors&.any? %>

@@ -8,12 +8,12 @@
     { name: 'Statistics', icon: 'chart-line', path: '#', page: 'statistics' }
   ] %>
 
-  <nav class="mt-6">
+  <nav class="pt-6 md:w-50 border-r border-gray-200 dark:border-gray-700 h-full">
     <ul>
       <% sidebar_items.each do |item| %>
-        <li class="px-4 py-2 hover:bg-gray-100 gap-2 cursor-pointer <%= 'border-l-4 border-purple-500 bg-gray-100' if active_page == item[:page] %>">
-          <%= link_to item[:path], class: 'block text-gray-700 flex items-center gap-2 dark:text-gray-400 pr-15' do %>
-            <%= lucide_icon(item[:icon]) %>
+        <li class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-800 gap-2 cursor-pointer <%= active_page == item[:page] ? 'border-l-4 border-purple-500 bg-transparent' : 'border-l-4 border-transparent' %>">
+          <%= link_to item[:path], class: 'block text-gray-700 flex items-center gap-2 dark:text-gray-400' do %>
+            <%= lucide_icon(item[:icon], class: "#{'text-purple-500' if active_page == item[:page]}") %>
             <span class="hidden md:inline"><%= item[:name] %></span>
           <% end %>
         </li>

@@ -62,9 +62,6 @@ class TasksController < ApplicationController
 
   def destroy
     result = TaskManager::Destroy.new(task: @task).call
-    puts "==============START==================="
-    puts params.inspect
-    puts "==============END==================="
     # @pagy, @tasks = paginated_tasks
     respond_to do |format|
       if result.success?

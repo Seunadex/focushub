@@ -25,6 +25,10 @@
         <%= form.label :frequency, class: "block mb-1 text-sm font-medium text-gray-900" %>
         <%= form.select :frequency, Habit.frequencies.keys.map { |f| [f.humanize, f] }, {}, class: "block w-full ps-3 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition" %>
       </div>
+      <div>
+        <%= form.label :target, class: "block mb-1 text-sm font-medium text-gray-900" %>
+        <%= form.text_field :target, class: "block w-full ps-3 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition" %>
+      </div>
       <div class="pt-4 flex justify-between items-center">
         <%= form.submit(habit.persisted? ? "Update Habit" : "Create Habit", class: "inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition cursor-pointer") %>
         <%= button_tag "Cancel", type: "button", data: { action: "turbo-modal#close" }, class: "text-sm text-gray-600 hover:underline hover:cursor-pointer" %>

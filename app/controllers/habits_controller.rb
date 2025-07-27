@@ -1,4 +1,6 @@
 class HabitsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @habits = current_user.habits.order(created_at: :desc)
     @pagy, @habits = pagy(@habits, limit: 15)
@@ -18,6 +20,7 @@ class HabitsController < ApplicationController
   def create
     @habit = current_user.habits.build(habit_params)
     if @habit.save
+      @habits = current_user.habits.order(created_at: :desc)
       flash.now[:notice] = "Habit created successfully."
       respond_to do |format|
         format.turbo_stream
@@ -30,5 +33,11 @@ class HabitsController < ApplicationController
         format.html { render :new }
       end
     end
+  end
+
+  private
+
+  def habit_params
+    params.require(:habit).permit(:title, :description, :frequency, :target)
   end
 end

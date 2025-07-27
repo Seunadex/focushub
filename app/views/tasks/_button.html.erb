@@ -1,4 +1,4 @@
-<div id="new-task-container" class="flex justify-between items-center">
-  <%= link_to lucide_icon('plus', class: "h-5 w-5 mr-1") + " Add Task", new_task_path, data: { turbo_frame: "modal" },
-    class: "#{local_assigns[:class]} text-sm font-semibold py-1 px-2 rounded-md antialiased flex items-center" %>
+<div id="new-task-container" class="flex justify-between items-center whitespace-nowrap">
+  <%= link_to lucide_icon('plus', class: "h-3 w-3 mr-1 sm:h-5 sm:w-5") + " Add Task", new_task_path, data: { turbo_frame: "modal" },
+    class: "#{local_assigns[:class]} text-xs sm:text-sm font-semibold py-1 px-1 sm:px-2 rounded-md antialiased flex items-center" %>
 </div>

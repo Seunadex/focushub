@@ -1,0 +1,3 @@
+<%= turbo_stream.update "flash", partial: "shared/flash" %>
+<%= turbo_stream.remove "modal" %>
+<%= turbo_stream.replace "habits", partial: "habits/habit_list", locals: { habits: @habits } %>
