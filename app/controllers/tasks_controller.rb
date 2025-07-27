@@ -99,17 +99,17 @@ class TasksController < ApplicationController
         source = params[:source] || ""
         tasks = case source
         when "dashboard"
-          current_user.tasks.due_today.order(due_date: :desc)
+          current_user.tasks.due_today
         when "pending"
-          current_user.tasks.pending.where.not(id: @task.id).order(due_date: :desc)
+          current_user.tasks.pending.where.not(id: @task.id)
         when "completed"
-          current_user.tasks.completed.where.not(id: @task.id).order(due_date: :desc)
+          current_user.tasks.completed.where.not(id: @task.id)
         else
-          current_user.tasks.where.not(id: @task.id).order(due_date: :desc)
+          current_user.tasks.where.not(id: @task.id)
         end
 
         page = [ (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil, 1 ].max
-        @pagy, @tasks = pagy(tasks, page: page)
+        @pagy, @tasks = pagy(tasks.order(due_date: :desc), page: page)
         @source = source
 
         flash.now[:notice] = params[:completed] == "true" ? "Good work!, Task completed successfully." : "Task marked as incomplete."

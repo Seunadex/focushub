@@ -25,7 +25,7 @@
               <%= link_to lucide_icon("square-pen", class: "h-3 w-3 mr-2") + " Edit", edit_habit_path(habit), class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 py-1 pl-3 pr-7 w-full" %>
             </li>
             <li>
-              <%= link_to lucide_icon("archive", class: "h-3 w-3 mr-2") + " Archive", "#", method: :patch, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 py-1 pl-3 pr-7 w-full" %>
+              <%= button_to lucide_icon("archive", class: "h-3 w-3 mr-2") + " #{habit.active? ? "Archive" : "Restore"}", archive_toggle_habit_path(habit, active: !habit.active?), method: :patch, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 py-1 pl-3 pr-7 w-full" %>
             </li>
             <li class="mb-1 flex items-center cursor-pointer">
               <%= button_to lucide_icon("trash-2", class: "h-3 w-3 mr-2") + " Delete", habit_path(habit), method: :delete, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "flex items-center text-sm text-red-600 hover:bg-gray-100 py-1 pl-3 pr-7 rounded-sm w-full" %>

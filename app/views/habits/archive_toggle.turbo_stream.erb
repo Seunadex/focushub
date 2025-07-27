@@ -1,0 +1,4 @@
+<%= turbo_stream.update  "habit_list_content" do %>
+  <%= render "habits/habit_list", habits: @habits, page: "" %>
+<% end %>
+<%= turbo_stream.update "flash", partial: "shared/flash" %>

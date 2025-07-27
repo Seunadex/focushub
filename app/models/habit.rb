@@ -3,7 +3,7 @@ class Habit < ApplicationRecord
   has_many :habit_completions, inverse_of: :habit, dependent: :destroy
 
   validates :title, presence: true
-  validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly], message: "%{value} is not a valid frequency" }
+  validates :frequency, presence: true, inclusion: { in: %w[daily weekly bi-weekly monthly quarterly annually], message: "%{value} is not a valid frequency" }
 
   enum :frequency, { daily: 0, weekly: 1, "bi-weekly": 2, monthly: 3, quarterly: 4, annually: 5 }
 
@@ -19,11 +19,11 @@ class Habit < ApplicationRecord
   end
 
   def archive!
-    update(active: false)
+    update!(active: false)
   end
 
   def restore!
-    update(active: true)
+    update!(active: true)
   end
 
   def completed_today?
