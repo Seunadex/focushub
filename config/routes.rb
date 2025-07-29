@@ -21,9 +21,12 @@ Rails.application.routes.draw do
   end
 
   resources :habits do
-    resources :habit_completions, only: [ :create, :destroy ], as: :habit_completions
+    resources :habit_completions, only: [ :create, :destroy ], as: :habit_completions do
+      delete :undo, on: :collection
+    end
     member do
       patch :archive_toggle, to: "habits#archive_toggle", as: :archive_toggle
+      post :complete, to: "habits#complete", as: :complete
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

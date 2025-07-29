@@ -1,6 +1,6 @@
 class HabitsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_habit, only: [ :archive_toggle ]
+  before_action :set_habit, only: [ :archive_toggle, :complete ]
 
   def index
     habits = current_user.habits
@@ -61,6 +61,19 @@ class HabitsController < ApplicationController
         flash.now[:alert] = "Failed to #{action} habit."
         format.turbo_stream { render turbo_stream: turbo_stream.update("flash", partial: "shared/flash") }
         format.html { redirect_to habits_path, alert: "Failed to #{action} habit." }
+      end
+    end
+  end
+
+  def complete
+    return unless params[:id].present?
+    completed_status = ActiveModel::Type::Boolean.new.cast(params[:completed])
+    completed_action = completed_status ? "complete!" : "undo_complete!"
+    if @habit.send(completed_action)
+      flash.now[:notice] = completed_status ? "'#{@habit.title}' marked as complete." : "'#{@habit.title}' marked as incomplete."
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to habits_path, notice: flash.now[:notice] }
       end
     end
   end
