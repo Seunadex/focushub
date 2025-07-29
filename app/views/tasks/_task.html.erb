@@ -29,7 +29,7 @@
             when 'low' then 'bg-slate-100 text-gray-600'
             else 'bg-gray-100 text-gray-600'
           end %>
-          <span class="text-xs sm:text-sm font-medium px-2 py-1 rounded-3xl flex justify-between items-center <%= priority_color %>">
+          <span class="text-xs sm:text-xs font-normal px-2 py-0.5 rounded-3xl flex justify-between items-center <%= priority_color %>">
             <%= lucide_icon('flag', class: "h-3 w-4") %> <%= task.priority %>
           </span>
         <% end %>

@@ -10,6 +10,9 @@ application.register("flash", FlashController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import SidebarController from "./sidebar_controller"
+application.register("sidebar", SidebarController)
+
 import TaskController from "./task_controller"
 application.register("task", TaskController)
 

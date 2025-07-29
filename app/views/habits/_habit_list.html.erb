@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "habits" do %>
-  <div class="gap-3 grid <%= 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' unless page == 'dashboard' %>">
+  <div class="gap-3 grid overflow-y-auto max-h-150 <%= 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' unless page == 'dashboard' %>">
     <% habits.each do |habit| %>
       <%= render 'habits/habit', habit: habit %>
     <% end %>
@@ -8,5 +8,8 @@
     <div class="text-center text-gray-500 mt-6">
       <p class="text-gray-500">No habits found.</p>
     </div>
+  <% end %>
+  <% if pagy.pages > 1 %>
+    <%= tailwind_pagy_nav(pagy) %>
   <% end %>
 <% end %>

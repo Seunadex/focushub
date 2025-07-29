@@ -24,12 +24,15 @@
 
   <body class="text-gray-800 leading-normal relative">
     <%= turbo_frame_tag "modal" %>
-    <%= render "layouts/navbar" %>
-    <main class="min-h-[90vh] <%= 'flex justify-center' if user_signed_in? %>">
+
+    <main class="min-h-[90vh] <%= 'flex' if user_signed_in? %>">
       <% if user_signed_in? %>
         <%= render "layouts/sidebar" %>
       <% end %>
-      <%= yield %>
+      <div class="w-full">
+        <%= render "layouts/navbar" %>
+        <%= yield %>
+      </div>
     </main>
     <%= render "layouts/footer" %>
     <div class="fixed top-10 right-10 m-4 z-50">

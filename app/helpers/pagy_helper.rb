@@ -23,7 +23,7 @@ module PagyHelper
       end
     end.join.html_safe
 
-    content_tag(:nav, class: "flex items-center space-x-2 mt-4") do
+    content_tag(:nav, class: "flex items-center space-x-2 mt-5") do
       safe_join([ previous_link, page_links, next_link ])
     end
   end
