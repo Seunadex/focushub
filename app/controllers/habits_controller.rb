@@ -1,6 +1,6 @@
 class HabitsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_habit, only: [ :archive_toggle, :complete ]
+  before_action :set_habit, only: [ :archive_toggle, :complete, :destroy ]
 
   def index
     habits = current_user.habits
@@ -74,6 +74,22 @@ class HabitsController < ApplicationController
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to habits_path, notice: flash.now[:notice] }
+      end
+    end
+  end
+
+  def destroy
+    return unless params[:id].present?
+    if @habit&.destroy
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to habits_path, notice: "Habit deleted successfully." }
+      end
+    else
+      respond_to do |format|
+        flash.now[:alert] = "Failed to delete habit."
+        format.turbo_stream { render turbo_stream: turbo_stream.update("flash", partial: "shared/flash") }
+        format.html { redirect_to habits_path, alert: "Failed to delete habit." }
       end
     end
   end

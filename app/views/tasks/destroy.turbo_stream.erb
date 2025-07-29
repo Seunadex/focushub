@@ -17,7 +17,7 @@
 <% end %>
 
 
-    <%= turbo_stream.remove "task_#{@task.id}" %>
+<%= turbo_stream.remove "task_#{@task.id}" %>
 <%= turbo_stream.update "task_list_content" do %>
-    <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: @source %>
-  <% end %>
+  <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: @source %>
+<% end %>
