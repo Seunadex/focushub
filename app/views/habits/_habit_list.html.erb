@@ -1,7 +1,9 @@
 <%= turbo_frame_tag "habits" do %>
   <div class="gap-3 grid overflow-y-auto max-h-150 <%= 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' unless page == 'dashboard' %>">
     <% habits.each do |habit| %>
-      <%= render 'habits/habit', habit: habit %>
+      <%= turbo_frame_tag "habit_#{habit.id}" do %>
+        <%= render 'habits/habit', habit: habit, extra_class: "" %>
+      <% end %>
     <% end %>
   </div>
   <% if habits.empty? %>

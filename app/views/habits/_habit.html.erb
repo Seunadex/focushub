@@ -1,59 +1,57 @@
-<%= turbo_frame_tag dom_id(habit) do %>
-  <div class="border border-gray-200 bg-white p-4 rounded-xl hover:shadow-lg transition-shadow dark:bg-transparent dark:border-gray-600">
-    <div class="flex justify-between items-start">
-      <div>
-        <div class="flex items-center space-x-1">
-          <%= lucide_icon("circle-gauge", class: "h-4 w-4 text-blue-600 dark:text-gray-200") %>
-          <h2 class="text-md font-medium text-gray-800 dark:text-gray-200"><%= habit.title %></h2>
-        </div>
-        <p class="text-gray-600 dark:text-gray-400 text-sm"><%= habit.description %></p>
+<div class="border border-gray-200 bg-white p-4 rounded-xl hover:shadow-lg transition-shadow dark:bg-gray-900 dark:border-gray-600 <%= local_assigns[:extra_class] %>">
+  <div class="flex justify-between items-start">
+    <div>
+      <div class="flex items-center space-x-1">
+        <%= lucide_icon("circle-gauge", class: "h-4 w-4 text-blue-600 dark:text-gray-200") %>
+        <h2 class="text-md font-medium text-gray-800 dark:text-gray-200"><%= habit.title %></h2>
       </div>
-      <div class="flex items-center space-x-1 relative">
-        <%= form_with url: complete_habit_path(habit), method: :post, data: { turbo_stream: true }, class: "inline" do %>
-          <%= hidden_field_tag "completed", false %>
-          <%= check_box_tag "completed", true, habit.progress >= 100,
-            id: "inline-checkbox-#{habit.id}",
-            onchange: "this.form.requestSubmit();",
-            disabled: habit.archived?,
-            checked: habit.progress >= 100,
-            class: "w-4 h-4 rounded-full text-green-600 border-gray-300 checked:bg-green-600 dark:bg-transparent #{habit.archived? ? 'opacity-50 cursor-not-allowed' : ''}" %>
-        <% end %>
-        <button type="button" class="rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer p-0.5" id="habit-actions-<%= habit.id %>-menu" data-dropdown-placement="bottom" data-dropdown-toggle="habit-actions-<%= habit.id %>">
-          <%= lucide_icon "ellipsis", class: "w-4 h-4" %>
-        </button>
-        <div id="habit-actions-<%= habit.id %>" class="hidden z-10 -right-25">
-          <ul aria-labelledby="habit-actions-<%= habit.id %>-menu" class="dark:bg-gray-900 dark:text-gray-200 box-border p-1 rounded-md dark:border dark:border-gray-600 bg-white shadow-lg">
-            <li class="">
-              <%= button_to lucide_icon("undo-2", class: "h-3 w-3 mr-1") + " Undo", undo_habit_habit_completions_path(habit), method: :delete, data: { turbo_stream: true }, class: "cursor-pointer flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500", disabled: habit.archived? %>
-            </li>
-            <li class="">
-              <%= link_to lucide_icon("square-pen", class: "h-3 w-3 mr-1") + " Edit", edit_habit_path(habit), class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500", disabled: habit.archived? %>
-            </li>
-            <li class="">
-              <%= button_to lucide_icon("archive", class: "h-3 w-3 mr-1") + " #{habit.active? ? "Archive" : "Restore"}", archive_toggle_habit_path(habit, active: !habit.active?), method: :patch, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500" %>
-            </li>
-            <li class="">
-              <%= button_to lucide_icon("trash-2", class: "h-3 w-3 mr-1") + " Delete", habit_path(habit), method: :delete, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-sm text-red-600 hover:bg-gray-100 rounded-sm w-full rounded-sm px-2 py-0.5" %>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <p class="text-gray-600 dark:text-gray-400 text-sm"><%= habit.description %></p>
     </div>
-    <div class="flex items-center mt-2 text-gray-500 text-sm space-x-1">
-      <%= lucide_icon("flame", class: "text-yellow-500") %> <span><%= habit_streak_text(habit) %></span>
-    </div>
-    <div class="my-2">
-      <div class="flex justify-between items-center">
-        <p class="text-sm dark:text-gray-400">Progress</p>
-        <p class="text-sm dark:text-gray-400">
-          <%= habit.progress %>%
-        </p>
-      </div>
-      <div class="relative pt-1">
-        <div class="flex h-2 bg-gray-200 rounded-full dark:bg-gray-800">
-          <div class="bg-blue-600 rounded-full dark:bg-white" style="width: <%= habit.progress %>%"></div>
-        </div>
+    <div class="flex items-center space-x-1 relative">
+      <%= form_with url: complete_habit_path(habit), method: :post, data: { turbo_stream: true }, class: "inline" do %>
+        <%= hidden_field_tag "completed", false %>
+        <%= check_box_tag "completed", true, habit.progress >= 100,
+          id: "inline-checkbox-#{habit.id}",
+          onchange: "this.form.requestSubmit();",
+          disabled: habit.archived?,
+          checked: habit.progress >= 100,
+          class: "w-4 h-4 rounded-full text-green-600 border-gray-300 checked:bg-green-600 dark:bg-transparent #{habit.archived? ? 'opacity-50 cursor-not-allowed' : ''}" %>
+      <% end %>
+      <button type="button" class="rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer p-0.5" id="habit-actions-<%= habit.id %>-menu" data-dropdown-placement="bottom" data-dropdown-toggle="habit-actions-<%= habit.id %>">
+        <%= lucide_icon "ellipsis", class: "w-4 h-4" %>
+      </button>
+      <div id="habit-actions-<%= habit.id %>" class="hidden z-10 -right-25">
+        <ul aria-labelledby="habit-actions-<%= habit.id %>-menu" class="dark:bg-gray-900 dark:text-gray-200 box-border p-1 rounded-md dark:border dark:border-gray-600 bg-white shadow-lg">
+          <li class="">
+            <%= button_to lucide_icon("undo-2", class: "h-3 w-3 mr-1") + " Undo", undo_habit_habit_completions_path(habit), method: :delete, data: { turbo_stream: true }, class: "cursor-pointer flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500", disabled: habit.archived? %>
+          </li>
+          <li class="">
+            <%= link_to lucide_icon("square-pen", class: "h-3 w-3 mr-1") + " Edit", edit_habit_path(habit), data: { turbo_frame: "modal" }, class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500", disabled: habit.archived? %>
+          </li>
+          <li class="">
+            <%= button_to lucide_icon("archive", class: "h-3 w-3 mr-1") + " #{habit.active? ? "Archive" : "Restore"}", archive_toggle_habit_path(habit, active: !habit.active?), method: :patch, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500" %>
+          </li>
+          <li class="">
+            <%= button_to lucide_icon("trash-2", class: "h-3 w-3 mr-1") + " Delete", habit_path(habit), method: :delete, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-sm text-red-600 hover:bg-gray-100 rounded-sm w-full rounded-sm px-2 py-0.5" %>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-<% end %>
+  <div class="flex items-center mt-2 text-gray-500 text-sm space-x-1">
+    <%= lucide_icon("flame", class: "text-yellow-500") %> <span><%= habit_streak_text(habit) %></span>
+  </div>
+  <div class="my-2">
+    <div class="flex justify-between items-center">
+      <p class="text-sm dark:text-gray-400">Progress</p>
+      <p class="text-sm dark:text-gray-400">
+        <%= habit.progress %>%
+      </p>
+    </div>
+    <div class="relative pt-1">
+      <div class="flex h-2 bg-gray-200 rounded-full dark:bg-gray-800">
+        <div class="bg-blue-600 rounded-full dark:bg-white" style="width: <%= habit.progress %>%"></div>
+      </div>
+    </div>
+  </div>
+</div>

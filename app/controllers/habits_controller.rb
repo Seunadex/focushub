@@ -1,6 +1,6 @@
 class HabitsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_habit, only: [ :archive_toggle, :complete, :destroy ]
+  before_action :set_habit, only: [ :archive_toggle, :complete, :destroy, :edit, :update ]
 
   def index
     habits = current_user.habits
@@ -21,6 +21,9 @@ class HabitsController < ApplicationController
     @habit = Habit.new
   end
 
+  def edit
+  end
+
   def create
     @habit = current_user.habits.build(habit_params)
     if @habit.save
@@ -35,6 +38,22 @@ class HabitsController < ApplicationController
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("modal", partial: "habits/form", locals: { habit: @habit }) }
         format.html { render :new }
+      end
+    end
+  end
+
+  def update
+    if @habit.update(habit_params)
+      respond_to do |format|
+        flash.now[:notice] = "Habit updated successfully."
+        format.turbo_stream
+        format.html { redirect_to habits_path, notice: "Habit updated successfully." }
+      end
+    else
+      flash.now[:alert] = @habit.errors.full_messages.to_sentence
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("modal", partial: "habits/form", locals: { habit: @habit }) }
+        format.html { render :edit }
       end
     end
   end

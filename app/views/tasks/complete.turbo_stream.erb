@@ -1,10 +1,9 @@
 <% current_user_tasks = current_user.tasks %>
-<%#= turbo_stream.replace "task_#{@task.id}", partial: "tasks/task", locals: { task: @task } %>
 <%= turbo_stream.update "completed_today_count", partial: "dashboard/task_count", locals: {
   completed: current_user_tasks.completed_today.size,
   total: current_user_tasks.due_today.size
 } %>
-<%= turbo_stream.update "flash", partial: "shared/flash" %>
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>
 <%= turbo_stream.update "pending_count" do %>
   <%= current_user_tasks.pending.size %>
 <% end %>

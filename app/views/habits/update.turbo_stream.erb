@@ -1,0 +1,5 @@
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<%= turbo_stream.update "modal", "" %>
+<%= turbo_stream.update "habit_#{@habit.id}" do %>
+  <%= render "habits/habit", habit: @habit.reload, extra_class: "animate__animated animate__flash" %>
+<% end %>
