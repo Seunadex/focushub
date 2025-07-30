@@ -11,10 +11,6 @@ class Habit < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :archived, -> { where(active: false) }
 
-  def streak
-    read_attribute(:streak) || 0
-  end
-
   def active?
     read_attribute(:active) == true
   end
@@ -37,14 +33,6 @@ class Habit < ApplicationRecord
 
     completed_habits = HabitCompletion.where(completed_on: Date.current).distinct.count(:habit_id)
     (completed_habits.to_f / total_habits * 100).round
-  end
-
-  def self.total_completed_today
-    HabitCompletion.where(completed_on: Date.current).count
-  end
-
-  def completed_today?
-    habit_completions.exists?(completed_on: Date.current)
   end
 
   def complete!(date = Date.current)
