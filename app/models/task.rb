@@ -16,6 +16,7 @@ class Task < ApplicationRecord
   scope :completed_today, -> { where(completed: true, due_date: Date.current) }
   scope :high_priority, -> { where(priority: :high) }
   scope :due_today, -> { where(due_date: Date.current) }
+  scope :due_tomorrow, -> { where(due_date: Date.tomorrow) }
 
   def overdue?
     due_date.present? && due_date < Date.today && !completed

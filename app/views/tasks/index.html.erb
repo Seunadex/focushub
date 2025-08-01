@@ -1,4 +1,4 @@
-<div class="w-full mx-auto p-6 bg-[#e7eefe]-50 dark:bg-gray-900">
+<div class="w-full mx-auto p-6 bg-[#e7eefe]-50 dark:bg-slate-950 h-full">
   <div class="flex justify-between items-center mb-6">
     <div>
       <h1 class="text-3xl font-bold dark:text-white">Tasks</h1>
@@ -8,7 +8,7 @@
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="border border-gray-200 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-transparent dark:border-gray-600">
+    <div class="border border-gray-200 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-transparent dark:border-slate-800">
       <div class="flex items-center space-x-3 mb-3">
         <%= lucide_icon("clock", class: "w-6 h-6 text-gray-600 dark:text-gray-300") %>
         <p class="text-gray-600 font-semibold uppercase tracking-wide text-sm dark:text-gray-300">Pending Tasks</p>
@@ -21,7 +21,7 @@
       <p class="text-gray-500 text-sm dark:text-gray-400">Tasks remaining</p>
     </div>
 
-    <div class="border border-gray-200 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-transparent dark:border-gray-600">
+    <div class="border border-gray-200 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-transparent dark:border-slate-800">
       <div class="flex items-center space-x-3 mb-3">
         <%= lucide_icon("circle-check-big", class: "w-6 h-6 text-gray-600 dark:text-gray-300") %>
         <p class="text-gray-600 font-semibold uppercase tracking-wide text-sm dark:text-gray-300">Completed</p>
@@ -34,7 +34,7 @@
       <p class="text-gray-500 text-sm dark:text-gray-400">Tasks done</p>
     </div>
 
-    <div class="border border-gray-200 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-transparent dark:border-gray-600">
+    <div class="border border-gray-200 bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow dark:bg-transparent dark:border-slate-800">
       <div class="flex items-center space-x-3 mb-3">
         <%= lucide_icon("circle-alert", class: "w-6 h-6 text-gray-600 dark:text-gray-300") %>
         <p class="text-gray-600 font-semibold uppercase tracking-wide text-sm dark:text-gray-300">High Priority</p>
@@ -53,9 +53,9 @@
     <%= form_with url: tasks_path, method: :get, data: { turbo_stream: true }, class: "my-6" do %>
       <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
         <%= hidden_field_tag :status, params[:status] %>
-        <input type="text" name="search" placeholder="Search tasks..." value="<%= params[:search] %>" class="border border-gray-300 rounded-md px-4 py-1 w-full bg-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200" />
+        <input type="text" name="search" placeholder="Search tasks..." value="<%= params[:search] %>" class="border border-gray-300 rounded-md px-4 py-1 w-full bg-transparent dark:border-slate-800 dark:bg-slate-950 dark:text-gray-200" />
 
-        <select name="priority" class="border border-gray-300 rounded-md px-4 py-1 w-full md:w-1/4 bg-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
+        <select name="priority" class="border border-gray-300 rounded-md px-4 py-1 w-full md:w-1/4 bg-transparent dark:bg-slate-950 dark:border-slate-800 dark:text-gray-200">
           <option value="">All Priorities</option>
           <option value="high" <%= 'selected' if params[:priority] == 'high' %>>High</option>
           <option value="medium" <%= 'selected' if params[:priority] == 'medium' %>>Medium</option>
@@ -67,7 +67,7 @@
         </button>
       </div>
     <% end %>
-    <div class="mb-6 bg-gray-200 rounded-sm dark:bg-gray-800">
+    <div class="mb-6 bg-gray-200 rounded-sm dark:bg-slate-800">
       <nav class="grid grid-cols-3 text-center" aria-label="Tabs">
         <%= link_to "All Tasks", tasks_path, data: { turbo_frame: "task_list" }, class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status].blank? ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" %>
         <%= link_to "Pending", tasks_path(status: 'pending'), data: { turbo_frame: "task_list" }, class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status] == 'pending' ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" %>

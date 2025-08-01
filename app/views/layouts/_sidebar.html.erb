@@ -1,4 +1,4 @@
-<aside class="w-auto bg-white dark:bg-gray-900 dark:border-r-gray-800 dark:border-r">
+<aside class="w-auto bg-white dark:bg-slate-950 dark:border-r-slate-900 dark:border-r">
   <% active_page = controller_name %>
   <% sidebar_items = [
     { name: 'Dashboard', icon: 'layout-dashboard', path: dashboard_path, page: 'dashboard' },
@@ -15,7 +15,7 @@
     </div>
     <ul>
       <% sidebar_items.each do |item| %>
-        <li class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 gap-2 cursor-pointer <%= active_page == item[:page] ? 'border-l-4 border-purple-500 bg-gray-100 dark:bg-gray-800' : 'border-l-4 border-transparent' %>">
+        <li class="px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-700 gap-2 cursor-pointer <%= active_page == item[:page] ? 'border-l-4 border-purple-500 bg-gray-100 dark:bg-gray-800' : 'border-l-4 border-transparent' %>">
           <%= link_to item[:path], class: 'block text-gray-700 flex items-center gap-2 dark:text-gray-400' do %>
             <%= lucide_icon(item[:icon], class: "#{'text-purple-500' if active_page == item[:page]}") %>
             <span class="sidebar-text hidden lg:inline"><%= item[:name] %></span>
