@@ -4,9 +4,9 @@ class Habit < ApplicationRecord
 
   validates :title, presence: true
   validates :target, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :frequency, presence: true, inclusion: { in: %w[daily weekly bi-weekly monthly quarterly annually], message: "%{value} is not a valid frequency" }
+  validates :frequency, presence: true, inclusion: { in: %w[daily weekly bi_weekly monthly quarterly annually], message: "%{value} is not a valid frequency" }
 
-  enum :frequency, { daily: 0, weekly: 1, "bi-weekly": 2, monthly: 3, quarterly: 4, annually: 5 }
+  enum :frequency, { daily: 0, weekly: 1, bi_weekly: 2, monthly: 3, quarterly: 4, annually: 5 }
 
   scope :active, -> { where(active: true) }
   scope :archived, -> { where(active: false) }

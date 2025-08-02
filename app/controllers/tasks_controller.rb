@@ -33,6 +33,7 @@ class TasksController < ApplicationController
         format.html { redirect_to tasks_path, notice: "Task created successfully." }
       end
     else
+      @task = result.value || Task.new(task_params)
       flash.now[:alert] = result.error
       respond_to do |format|
         format.html { render :new }
@@ -146,7 +147,9 @@ class TasksController < ApplicationController
   def paginated_tasks
     @paginated_tasks ||= begin
       tasks = remaining_tasks
-      page = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
+      page_count = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
+      # TODO: REcheck this logic
+      page = [ page_count, 1 ].max
       pagy(tasks, page: page)
     end
   end
