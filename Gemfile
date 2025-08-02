@@ -76,3 +76,7 @@ group :test do
 end
 
 gem "lucide-rails", "~> 0.7.1"
+
+gem "dockerfile-rails", ">= 1.7", :group => :development
+
+gem "aws-sdk-s3", "~> 1.195", :require => false
