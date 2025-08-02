@@ -12,6 +12,10 @@ default: &default
 development:
   <<: *default
   database: focushub_development
+  cable:
+    <<: *default
+    database: focushub_development_cable
+    migrations_paths: db/cable_migrate
 
 test:
   <<: *default
