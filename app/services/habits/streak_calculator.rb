@@ -58,21 +58,27 @@ module Habits
 
     # Calculate and save the streak back to the habit
     def calculate_and_save!
-      if period_missing?
+      if current_period_incomplete_and_past?
         @habit.reset_streak!
       else
         @habit.update!(streak: calculate)
       end
     end
-  end
 
-  private
+    private
 
-  def period_missing?
-    period_key = @habit.frequency.to_s
-    config = PERIODS.fetch(period_key, PERIODS["daily"])
-    range_proc = config[:range]
-    date = Date.current
-    @habit.habit_completions.where(completed_on: range_proc.call(date)).count < @habit.target
+    def current_period_incomplete_and_past?
+      period_key = @habit.frequency.to_s
+      config = PERIODS.fetch(period_key, PERIODS["daily"])
+      range_proc = config[:range]
+
+      date = Date.current
+      current_range = range_proc.call(date)
+      period_end = current_range.end
+
+      # Only reset if the period has ended and the user did not meet the target
+      Date.current > period_end &&
+        @habit.habit_completions.where(completed_on: current_range).count < @habit.target
+    end
   end
 end
