@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="flex items-center mt-2 text-gray-500 text-sm space-x-1">
-    <%= lucide_icon("flame", class: "text-yellow-500") %> <span><%= habit_streak_text(habit) %></span>
+    <%= lucide_icon("flame", class: "text-yellow-500 #{local_assigns[:animation_class] || ''}") %> <span><%= habit_streak_text(habit) %></span>
   </div>
   <div class="my-2">
     <div class="flex justify-between items-center">

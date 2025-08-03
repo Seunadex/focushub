@@ -1,2 +1,2 @@
-<%= turbo_stream.update("habit_#{@habit.id}", partial: "habits/habit", locals: { habit: @habit }) %>
+<%= turbo_stream.update("habit_#{@habit.id}", partial: "habits/habit", locals: { habit: @habit, animation_class: @habit.progress >= 100 ? "animate_animated animate__heartBeat" : "" }) %>
 <%= turbo_stream.prepend "flash", partial: "shared/flash" %>

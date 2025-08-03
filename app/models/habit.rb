@@ -46,6 +46,6 @@ class Habit < ApplicationRecord
   end
 
   def reset_streak!
-    update(streak: 0)
+    update!(streak: 0)
   end
 end

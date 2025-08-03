@@ -6,10 +6,12 @@ class HabitCompletion < ApplicationRecord
   private
 
   def update_streak!
+    return unless habit.persisted?
     Habits::StreakCalculator.new(habit).calculate_and_save!
   end
 
   def update_progress!
+    return unless habit.persisted?
     Habits::ProgressCalculator.new(habit).calculate_and_save!
   end
 end
