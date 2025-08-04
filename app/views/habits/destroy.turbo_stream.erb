@@ -1,4 +1,4 @@
 <%= turbo_stream.remove "habit_#{@habit.id}" %>
 <%= turbo_stream.update "total_habits" do %>
-  <%= current_user.habits.size %>
+  <%= current_user.habits.active.size %>
 <% end %>
