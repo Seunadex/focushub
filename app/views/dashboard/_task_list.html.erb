@@ -1,0 +1,18 @@
+<%= turbo_frame_tag "dashboard_tasks" do %>
+  <div>
+    <% tasks.each do |task| %>
+      <%= render 'tasks/task', task: task, source: "dashboard" %>
+    <% end %>
+  </div>
+  <% if tasks.empty? %>
+    <div class="text-center text-gray-500 mt-6">
+      <p class="text-gray-500">
+        <span>No tasks available for today.</span>
+      </p>
+    </div>
+  <% end %>
+  <span class="text-gray-500 text-sm"><%= pagy_info(pagy).html_safe %></span>
+  <% if pagy.pages > 1 %>
+    <%= tailwind_pagy_nav(pagy, base_path: dashboard_path) %>
+  <% end %>
+<% end %>

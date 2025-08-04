@@ -15,7 +15,7 @@
       </div>
       <p class="text-blue-600 font-bold text-4xl">
         <%= turbo_frame_tag "pending_count" do %>
-          <%= @tasks.pending.size %>
+          <%= current_user.tasks.pending.size %>
         <% end %>
       </p>
       <p class="text-gray-500 text-sm dark:text-gray-400">Tasks remaining</p>
@@ -28,7 +28,7 @@
       </div>
       <p class="text-green-600 font-bold text-4xl">
         <%= turbo_frame_tag "completed_count" do %>
-          <%= @tasks.completed.size %>
+          <%= current_user.tasks.completed.size %>
         <% end %>
       </p>
       <p class="text-gray-500 text-sm dark:text-gray-400">Tasks done</p>

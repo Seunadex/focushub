@@ -1,12 +1,17 @@
 <% current_user_tasks = current_user.tasks %>
-<%= turbo_stream.replace "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: 'dashboard' } %>
-<%= turbo_stream.update "modal", "" %>
+
+<%# Dashboard Page %>
+<%= turbo_stream.update "dashboard_task_list", partial: "dashboard/task_list", locals: { tasks: @tasks, pagy: @pagy } %>
 <%= turbo_stream.update "completed_today_count", partial: "dashboard/task_count", locals: {
   completed: current_user_tasks.completed_today.size,
   total: current_user_tasks.due_today.size
 } %>
-<%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<%= turbo_stream.update "upcoming_tasks_content" do %>
+  <%= render "dashboard/upcoming_tasks", tasks: current_user_tasks.due_tomorrow %>
+<% end %>
 
+<%# Task Page %>
+<%= turbo_stream.update "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: 'task' } %>
 <%= turbo_stream.update "pending_count" do %>
   <%= current_user_tasks.pending.size %>
 <% end %>
@@ -16,6 +21,8 @@
 <%= turbo_stream.update "completed_count" do %>
   <%= current_user_tasks.completed.size %>
 <% end %>
-<%= turbo_stream.replace "upcoming_tasks_content" do %>
-  <%= render "dashboard/upcoming_tasks", tasks: current_user_tasks.due_tomorrow %>
-<% end %>
+
+<%# Shared %>
+<%= turbo_stream.update "modal", "" %>
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+

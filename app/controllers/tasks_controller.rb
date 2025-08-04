@@ -22,6 +22,12 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
+  # On task creation
+  # Update the task list in the dashboard and tasks page
+  # Update the upcoming tasks section in the dashboard
+  # Update the task count in the dashboard (Done)
+  # Update the high priority, pending, completed task count in the task page (Done)
+  # remove modal
   def create
     result = TaskManager::Create.new(user: current_user, params: task_params).call
     if result.success?
@@ -141,16 +147,21 @@ class TasksController < ApplicationController
 
   def remaining_tasks
     referer_path = URI(request.referer || "").path
-    referer_path.include?("tasks") ? current_user.tasks.where.not(id: @task.id).order(due_date: :desc) : current_user.tasks.where(due_date: Date.current).order(due_date: :desc)
+    referer_path.include?("tasks") ? current_user.tasks.where.not(id: @task.id).order(due_date: :desc) : current_user.tasks.due_today.order(due_date: :asc)
   end
 
+  # def paginated_tasks
+  #   @paginated_tasks ||= begin
+  #     tasks = remaining_tasks
+  #     page_count = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
+  #     # TODO: REcheck this logic
+  #     page = [ page_count, 1 ].max
+  #     pagy(tasks, page: page)
+  #   end
+  # end
   def paginated_tasks
-    @paginated_tasks ||= begin
-      tasks = remaining_tasks
-      page_count = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
-      # TODO: REcheck this logic
-      page = [ page_count, 1 ].max
-      pagy(tasks, page: page)
-    end
+    tasks = remaining_tasks
+    page  = params[:page].presence || 1
+    pagy(tasks, page: page)
   end
 end
