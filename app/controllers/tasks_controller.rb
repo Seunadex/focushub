@@ -53,6 +53,13 @@ class TasksController < ApplicationController
   def show
   end
 
+
+  # On task update
+  # Update the task list in the dashboard and tasks page
+  # Update the upcoming tasks section in the dashboard if date changed
+  # Update the high priority, pending, completed task count in the task page (Done)
+  # remove modal
+  # Update the task in the tasks page
   def update
     result = TaskManager::Update.new(task: @task, params: task_params).call
     if result.success?
