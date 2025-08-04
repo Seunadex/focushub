@@ -12,8 +12,8 @@
             <% if current_user.avatar.attached? %>
               <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full mx-auto" %>
             <% else %>
-              <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xl font-semibold mx-auto">
-                <%= "<span class='sidebar-text hidden md:inline'>#{current_user.first_name.first.upcase if current_user.first_name.present?}#{current_user.last_name.first.upcase if current_user.last_name.present?}</span>" %>
+              <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-lg font-semibold mx-auto dark:bg-slate-900 dark:text-gray-400">
+                <span class="sidebar-text hidden md:inline"><%= current_user.abbreviated_name %></span>
               </div>
             <% end %>
             </button>

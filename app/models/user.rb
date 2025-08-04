@@ -13,4 +13,16 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}".strip
   end
+
+  def abbreviated_name
+    if first_name.present? && last_name.present?
+      "#{first_name.first.upcase}#{last_name.first.upcase}"
+    elsif first_name.present?
+      first_name.first.upcase
+    elsif last_name.present?
+      last_name.first.upcase
+    else
+      "U"
+    end
+  end
 end
