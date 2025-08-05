@@ -3,7 +3,7 @@
     <header class="w-full rounded-lg px-5 py-3 flex items-center justify-between border border-gray-300 dark:border-slate-800 bg-white dark:bg-slate-950">
       <div class="flex items-center space-x-4">
         <h1 class="text-xl font-semibold text-gray-600 dark:text-white">
-          <%= time_based_greeting %>, <%= current_user.first_name %>
+          <%= time_based_greeting %>, <%= current_user.first_name || current_user.email %>
         </h1>
         <h1 class="animate-pulse text-2xl">👋</h1>
       </div>
@@ -25,7 +25,7 @@
           <span class="font-semibold text-[#e0b084] dark:text-[#f2c089]">Active habits</span>
           <p class="text-2xl font-bold text-[#e0b084] dark:text-white">
             <%= turbo_frame_tag "total_habits" do %>
-              <%= @active_habits.size %>
+              <%= current_user.habits.active.size %>
             <% end %>
           </p>
         </div>
@@ -59,7 +59,7 @@
         </div>
         <%= turbo_stream_from "tasks_#{current_user.id}" %>
         <%= turbo_frame_tag "dashboard_task_list" do %>
-          <%= render 'dashboard/task_list', tasks: @current_tasks, pagy: @pagy %>
+          <%= render 'dashboard/task_list', tasks: @current_tasks, pagy: @task_pagy %>
         <% end %>
       </div>
 
@@ -68,7 +68,7 @@
           <%= lucide_icon('radar') %> <span>Active Habits</span>
         </h2>
         <%= turbo_frame_tag "habit_streaks_content" do %>
-          <%= render "habits/habit_list", habits: @active_habits, pagy: @pagy, page: "dashboard" %>
+          <%= render "dashboard/habit_list", habits: @active_habits, pagy: @habit_pagy %>
         <% end %>
       </div>
 

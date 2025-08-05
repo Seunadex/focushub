@@ -11,11 +11,12 @@
 # Pagy.new|Pagy::Countless.new|Pagy::Calendar::*.new or any of the #pagy* controller methods
 # Here are the few that make more sense as DEFAULTs:
 Pagy::DEFAULT[:limit]       = 10                    # default
-# Pagy::DEFAULT[:size]        = 7                     # default
+Pagy::DEFAULT[:size]        = 5                     # default
 # Pagy::DEFAULT[:ends]        = true                  # default
 # Pagy::DEFAULT[:page_param]  = :page                 # default
 # Pagy::DEFAULT[:count_args]  = []                    # example for non AR ORMs
 # Pagy::DEFAULT[:max_pages]   = 3000                  # example
+Pagy::DEFAULT[:items] = 10
 
 
 # Extras
@@ -152,7 +153,7 @@ Pagy::DEFAULT[:limit]       = 10                    # default
 # Overflow extra: Allow for easy handling of overflowing pages
 # See https://ddnexus.github.io/pagy/docs/extras/overflow
 # require 'pagy/extras/overflow'
-Pagy::DEFAULT[:overflow] = :last_page    # default  (other options: :last_page and :exception)
+Pagy::DEFAULT[:overflow] = :exception    # default  (other options: :last_page and :exception)
 
 # Trim extra: Remove the page=1 param from links
 # See https://ddnexus.github.io/pagy/docs/extras/trim

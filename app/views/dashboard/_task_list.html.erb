@@ -13,6 +13,6 @@
   <% end %>
   <span class="text-gray-500 text-sm"><%= pagy_info(pagy).html_safe %></span>
   <% if pagy.pages > 1 %>
-    <%= tailwind_pagy_nav(pagy, base_path: dashboard_path) %>
+    <%= pagy_nav(pagy, base_path: dashboard_path, turbo_frame: "dashboard_tasks", page_param_name: :tasks_page ) %>
   <% end %>
 <% end %>
