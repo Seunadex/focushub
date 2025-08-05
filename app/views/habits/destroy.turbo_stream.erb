@@ -2,3 +2,6 @@
 <%= turbo_stream.update "total_habits" do %>
   <%= current_user.habits.active.size %>
 <% end %>
+<%= turbo_stream.update "dashboard_habit_list" do %>
+  <%= active_habit_list %>
+<% end %>

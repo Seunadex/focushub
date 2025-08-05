@@ -14,8 +14,10 @@
   <%= current_user_tasks.completed.size %>
 <% end %>
 
-
-<%= turbo_stream.remove "task_#{@task.id}" %>
+<%#= turbo_stream.remove "task_#{@task.id}" %>
 <%= turbo_stream.update "task_list_content" do %>
   <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: @source %>
+<% end %>
+<%= turbo_stream.update "dashboard_task_list" do %>
+  <%= dashboard_task_list %>
 <% end %>

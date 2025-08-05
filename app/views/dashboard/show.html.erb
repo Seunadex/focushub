@@ -67,7 +67,7 @@
         <h2 class="text-lg sm:text-2xl font-semibold text-gray-700 dark:text-white mb-2 flex items-center space-x-2">
           <%= lucide_icon('radar') %> <span>Active Habits</span>
         </h2>
-        <%= turbo_frame_tag "habit_streaks_content" do %>
+        <%= turbo_frame_tag "dashboard_habit_list" do %>
           <%= render "dashboard/habit_list", habits: @active_habits, pagy: @habit_pagy %>
         <% end %>
       </div>

@@ -1,4 +1,6 @@
 module HabitsHelper
+  include Pagy::Backend
+
   def habit_streak_text(habit)
     streak = habit.streak || 0
     return "No streak data available" if streak.zero?
@@ -18,5 +20,10 @@ module HabitsHelper
     else
       "No streak data available"
     end
+  end
+
+  def active_habit_list
+    pagy, habits = pagy(current_user.habits.active.order(created_at: :desc))
+    render partial: "dashboard/habit_list", locals: { habits: habits, pagy: pagy }
   end
 end
