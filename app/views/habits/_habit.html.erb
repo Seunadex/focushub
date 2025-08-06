@@ -6,6 +6,7 @@
         <h2 class="text-md font-medium text-gray-800 dark:text-gray-200"><%= habit.title %></h2>
       </div>
       <p class="text-gray-600 dark:text-gray-400 text-sm"><%= habit.description %></p>
+      <p class="text-xs mt-1 text-blue-500"><%= habit.frequency.titleize %></p>
     </div>
     <div class="flex items-center space-x-1 relative">
       <%= form_with url: complete_habit_path(habit), method: :post, data: { turbo_stream: true }, class: "inline" do %>
@@ -23,7 +24,7 @@
       <div id="habit-actions-<%= habit.id %>" class="hidden z-10 -right-25">
         <ul aria-labelledby="habit-actions-<%= habit.id %>-menu" class="dark:bg-gray-900 dark:text-gray-200 box-border p-1 rounded-md dark:border dark:border-gray-600 bg-white shadow-lg">
           <li class="">
-            <%= button_to lucide_icon("undo-2", class: "h-3 w-3 mr-1") + " Undo", undo_habit_habit_completions_path(habit), method: :delete, data: { turbo_stream: true }, class: "cursor-pointer flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500", disabled: habit.archived? %>
+            <%= button_to lucide_icon("undo-2", class: "h-3 w-3 mr-1") + " Undo", undo_habit_habit_completions_path(habit), method: :delete, data: { turbo_stream: true }, class: "cursor-pointer flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500 #{habit.completion_count == 0 || habit.archived? ? 'opacity-50 cursor-not-allowed' : ''}", disabled: habit.completion_count == 0 || habit.archived? %>
           </li>
           <li class="">
             <%= link_to lucide_icon("square-pen", class: "h-3 w-3 mr-1") + " Edit", edit_habit_path(habit), data: { turbo_frame: "modal" }, class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500", disabled: habit.archived? %>
@@ -41,9 +42,12 @@
   <div class="flex items-center mt-2 text-gray-500 text-sm space-x-1">
     <%= lucide_icon("flame", class: "text-yellow-500 #{local_assigns[:animation_class] || ''}") %> <span><%= habit_streak_text(habit) %></span>
   </div>
-  <div class="my-2">
+  <div class="my-2 mt-3">
     <div class="flex justify-between items-center">
-      <p class="text-sm dark:text-gray-400">Progress</p>
+      <div class="flex items-center space-x-1">
+        <p class="text-sm dark:text-gray-400">Progress</p>
+        <p class="text-xs dark:text-gray-400">(<%= habit.completion_count %>/<%= habit.target %>)</p>
+      </div>
       <p class="text-sm dark:text-gray-400">
         <%= habit.progress %>%
       </p>

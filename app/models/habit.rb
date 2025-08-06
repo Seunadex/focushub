@@ -2,7 +2,7 @@ class Habit < ApplicationRecord
   belongs_to :user
   has_many :habit_completions, inverse_of: :habit, dependent: :destroy
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { maximum: 25 }
   validates :target, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly bi_weekly monthly quarterly annually], message: "%{value} is not a valid frequency" }
 
@@ -27,12 +27,12 @@ class Habit < ApplicationRecord
     update!(active: true)
   end
 
-  def self.completion_rate
-    total_habits = self.active.count
-    return 0 if total_habits.zero?
+  def completed_today?
+    progress == 100 && habit_completions.exists?(completed_on: Date.current)
+  end
 
-    completed_habits = HabitCompletion.where(completed_on: Date.current).distinct.count(:habit_id)
-    (completed_habits.to_f / total_habits * 100).round
+  def completion_count
+    habit_completions.count
   end
 
   def complete!(date = Date.current)

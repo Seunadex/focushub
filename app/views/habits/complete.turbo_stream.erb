@@ -1,2 +1,8 @@
 <%= turbo_stream.update("habit_#{@habit.id}", partial: "habits/habit", locals: { habit: @habit, animation_class: @habit.progress >= 100 ? "animate_animated animate__heartBeat" : "" }) %>
 <%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<%= turbo_stream.update "total_habits" do %>
+  <%= current_user.habits.active.filter { |habit| habit.completed_today? }.count %>/<%= current_user.habits.active.count %>
+<% end %>
+<%= turbo_stream.update "completion_rate" do %>
+  <%= ((@todays_progress.to_f / current_user.habits.active.count) * 100).round %>%
+<% end %>

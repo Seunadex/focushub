@@ -1,6 +1,6 @@
 <%= turbo_stream.remove "habit_#{@habit.id}" %>
 <%= turbo_stream.update "total_habits" do %>
-  <%= current_user.habits.active.size %>
+  <%= current_user.habits.active.filter { |habit| habit.completed_today? }.count %>/<%= current_user.habits.active.count %>
 <% end %>
 <%= turbo_stream.update "dashboard_habit_list" do %>
   <%= active_habit_list %>

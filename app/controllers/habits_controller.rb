@@ -4,6 +4,7 @@ class HabitsController < ApplicationController
 
   def index
     habits = current_user.habits
+    @todays_progress = habits.active.filter { |habit| habit.completed_today? }.count
     habits = habits.active if params[:active] == "true"
     habits = habits.archived if params[:active] == "false"
     habits = habits.order(created_at: :desc)
@@ -89,6 +90,7 @@ class HabitsController < ApplicationController
     completed_status = ActiveModel::Type::Boolean.new.cast(params[:completed])
     completed_action = completed_status ? "complete!" : "undo_complete!"
     if @habit.send(completed_action)
+      @todays_progress = current_user.habits.active.filter { |habit| habit.completed_today? }.count
       flash.now[:notice] = completed_status ? "'#{@habit.title}' marked as complete." : "'#{@habit.title}' marked as incomplete."
       respond_to do |format|
         format.turbo_stream

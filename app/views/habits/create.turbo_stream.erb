@@ -2,5 +2,5 @@
 <%= turbo_stream.update "modal", "" %>
 <%= turbo_stream.replace "habit_list_content", partial: "habits/habit_list", locals: { habits: @habits, pagy: @pagy, page: "" } %>
 <%= turbo_stream.update "total_habits" do %>
-  <%= @habits.size %>
+  <%= current_user.habits.active.filter { |habit| habit.completed_today? }.count %>/<%= @habits.size %>
 <% end %>
