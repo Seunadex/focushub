@@ -2,7 +2,7 @@ class Habit < ApplicationRecord
   belongs_to :user
   has_many :habit_completions, inverse_of: :habit, dependent: :destroy
 
-  validates :title, presence: true, length: { maximum: 25 }
+  validates :title, presence: true
   validates :target, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly bi_weekly monthly quarterly annually], message: "%{value} is not a valid frequency" }
 
@@ -31,8 +31,23 @@ class Habit < ApplicationRecord
     progress == 100 && habit_completions.exists?(completed_on: Date.current)
   end
 
-  def completion_count
-    habit_completions.count
+  def period_completion_count(period = :daily)
+    case period
+    when :daily
+      habit_completions.completed_today.count
+    when :weekly
+      habit_completions.completed_this_week.count
+    when :bi_weekly
+      habit_completions.completed_this_bi_week.count
+    when :monthly
+      habit_completions.completed_this_month.count
+    when :quarterly
+      habit_completions.completed_this_quarter.count
+    when :annually
+      habit_completions.completed_this_year.count
+    else
+      raise ArgumentError, "Invalid period: #{period}"
+    end
   end
 
   def complete!(date = Date.current)

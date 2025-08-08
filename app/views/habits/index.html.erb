@@ -28,7 +28,8 @@
       </div>
       <p class="text-green-600 font-medium text-2xl">
         <%= turbo_frame_tag "completion_rate" do %>
-          <%= ((@todays_progress.to_f / current_user.habits.active.count) * 100).round %>%
+          <% count = current_user.habits.active.count %>
+          <%= count.positive? ? ((@todays_progress.to_f / count) * 100).round : 0 %>%
         <% end %>
       </p>
       <p class="text-gray-500 text-sm dark:text-gray-400">Today</p>

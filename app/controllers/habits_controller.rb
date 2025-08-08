@@ -4,7 +4,7 @@ class HabitsController < ApplicationController
 
   def index
     habits = current_user.habits
-    @todays_progress = habits.active.filter { |habit| habit.completed_today? }.count
+    @todays_progress = habits.active.filter { |habit| habit.completed_today? }.count || 0
     habits = habits.active if params[:active] == "true"
     habits = habits.archived if params[:active] == "false"
     habits = habits.order(created_at: :desc)
