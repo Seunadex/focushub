@@ -37,10 +37,13 @@
           </div>
 
         <% else %>
+        <div class="flex items-center justify-between space-x-4 w-full">
+          <div class="text-2xl font-bold text-purple-600 hidden lg:inline full-logo">FocusHub</div>
           <div class="flex items-center space-x-4">
             <%= link_to "Sign up", new_user_registration_path, class: "px-4 py-1 bg-purple-600 text-white rounded-3xl hover:bg-purple-700 transition" %>
             <%= link_to "Log in", new_user_session_path, class: "px-4 py-1 bg-transparent border border-purple-600 text-purple-600 rounded-3xl hover:bg-purple-50 transition" %>
           </div>
+        </div>
         <% end %>
       </div>
     </div>
