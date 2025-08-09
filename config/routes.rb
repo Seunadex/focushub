@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "/dashboard", to: "dashboard#show", as: :dashboard
   authenticated :user do
     root to: "dashboard#show", as: :authenticated_root
+    mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 
   # Otherwise (guests), show the home landing page
