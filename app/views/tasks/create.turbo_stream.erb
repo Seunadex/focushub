@@ -11,7 +11,10 @@
 <% end %>
 
 <%# Task Page %>
-<%= turbo_stream.update "tasks", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: 'task' } %>
+<%= turbo_stream.update "task_list_content" do %>
+  <%= render 'tasks/task_list', tasks: @tasks, pagy: @pagy, source: params[:status] %>
+<% end %>
+
 <%= turbo_stream.update "pending_count" do %>
   <%= current_user_tasks.pending.size %>
 <% end %>

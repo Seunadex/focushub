@@ -29,7 +29,7 @@ class HabitsController < ApplicationController
   def create
     @habit = current_user.habits.build(habit_params)
     if @habit.save
-      @habits = current_user.habits.order(created_at: :desc)
+      @pagy, @habits = pagy(current_user.habits.order(created_at: :desc))
       flash.now[:notice] = "Habit created successfully."
       respond_to do |format|
         format.turbo_stream

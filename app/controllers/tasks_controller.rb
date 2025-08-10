@@ -8,8 +8,7 @@ class TasksController < ApplicationController
     tasks = tasks.where("LOWER(title) LIKE ?", "%#{params[:search].downcase}%") if params[:search].present?
     tasks = tasks.where(priority: params[:priority]) if params[:priority].present?
 
-    @pagy, @tasks = pagy(tasks.order(due_date: :desc), limit: 15)
-
+    @pagy, @tasks = pagy(tasks.order(due_date: :desc))
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace("task_list_content", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: params[:status] })
@@ -32,7 +31,7 @@ class TasksController < ApplicationController
     result = TaskManager::Create.new(user: current_user, params: task_params).call
     if result.success?
       @task = result.value
-      @pagy, @tasks = paginated_tasks
+      @pagy, @tasks = pagy(current_user.tasks.order(due_date: :desc))
       flash.now[:notice] = "Task created successfully."
       respond_to do |format|
         format.turbo_stream
@@ -76,7 +75,6 @@ class TasksController < ApplicationController
 
   def destroy
     result = TaskManager::Destroy.new(task: @task).call
-    # @pagy, @tasks = paginated_tasks
     respond_to do |format|
       if result.success?
         source = params[:source] || ""
@@ -157,18 +155,18 @@ class TasksController < ApplicationController
     referer_path.include?("tasks") ? current_user.tasks.where.not(id: @task.id).order(due_date: :desc) : current_user.tasks.due_today.order(due_date: :asc)
   end
 
-  # def paginated_tasks
-  #   @paginated_tasks ||= begin
-  #     tasks = remaining_tasks
-  #     page_count = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
-  #     # TODO: REcheck this logic
-  #     page = [ page_count, 1 ].max
-  #     pagy(tasks, page: page)
-  #   end
-  # end
   def paginated_tasks
-    tasks = remaining_tasks
-    page  = params[:page].presence || 1
-    pagy(tasks, page: page)
+    @paginated_tasks ||= begin
+      tasks = remaining_tasks
+      page_count = (tasks.size.to_f / Pagy::DEFAULT[:limit]).ceil
+      # TODO: REcheck this logic
+      page = [ page_count, 1 ].max
+      pagy(tasks, page: page)
+    end
   end
+  # def paginated_tasks
+  #   tasks = remaining_tasks
+  #   page  = params[:page].presence || 1
+  #   pagy(tasks, page: page)
+  # end
 end
