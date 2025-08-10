@@ -1,0 +1,7 @@
+<div class="flex items-end justify-between bg-gray-100 dark:bg-gray-800 p-2 rounded-md">
+  <span class="text-xs text-gray-600 dark:text-gray-300 capitalize"><%= best_streak.frequency_label %></span>
+  <div class="flex flex-col items-end space-x-1">
+    <span class="text-xs font-bold text-blue-600 dark:text-blue-400"><%= best_streak.streak || 0 %> </span>
+    <span class="text-xs text-gray-500 dark:text-gray-400"><%= best_streak.title || '---' %></span>
+  </div>
+</div>

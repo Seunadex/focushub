@@ -9,6 +9,7 @@ class HabitsController < ApplicationController
     habits = habits.archived if params[:active] == "false"
     habits = habits.order(created_at: :desc)
     @pagy, @habits = pagy(habits, limit: 15)
+    @best_streaks = BestStreaksQuery.for_user(current_user)
 
     respond_to do |format|
       format.turbo_stream do
@@ -91,6 +92,7 @@ class HabitsController < ApplicationController
     completed_action = completed_status ? "complete!" : "undo_complete!"
     if @habit.send(completed_action)
       @todays_progress = current_user.habits.active.filter { |habit| habit.completed_today? }.count
+      @best_streaks = BestStreaksQuery.for_user(current_user)
       flash.now[:notice] = completed_status ? "'#{@habit.title}' marked as complete." : "'#{@habit.title}' marked as incomplete."
       respond_to do |format|
         format.turbo_stream

@@ -6,3 +6,9 @@
 <%= turbo_stream.update "completion_rate" do %>
   <%= ((@todays_progress.to_f / current_user.habits.active.count) * 100).round %>%
 <% end %>
+
+<%= turbo_stream.update "best_streaks" do %>
+  <div class="grid grid-cols-2 gap-2">
+    <%= render partial: "habits/best_streak", collection: @best_streaks, as: :best_streak %>
+  </div>
+<% end %>
