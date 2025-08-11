@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_11_164606) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_11_185135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_164606) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.integer "kind"
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_activities_on_group_id"
+    t.index ["subject_type", "subject_id"], name: "index_activities_on_subject"
+    t.index ["subject_type", "subject_id"], name: "index_activities_on_subject_type_and_subject_id"
+    t.index ["user_id", "group_id"], name: "index_activities_on_user_id_and_group_id"
+    t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
   create_table "group_memberships", force: :cascade do |t|
@@ -98,6 +113,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_164606) do
     t.integer "progress", default: 0, null: false
     t.index ["frequency"], name: "index_habits_on_frequency"
     t.index ["user_id"], name: "index_habits_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "body"
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_messages_on_group_id"
+    t.index ["user_id", "group_id"], name: "index_messages_on_user_id_and_group_id", unique: true
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -254,10 +280,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_164606) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "activities", "groups"
+  add_foreign_key "activities", "users"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
   add_foreign_key "habit_completions", "habits"
   add_foreign_key "habits", "users"
+  add_foreign_key "messages", "groups"
+  add_foreign_key "messages", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
