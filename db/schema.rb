@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_084645) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_11_164606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,41 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_084645) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "group_memberships", force: :cascade do |t|
+    t.integer "role", null: false
+    t.integer "status", null: false
+    t.datetime "joined_at"
+    t.datetime "left_at"
+    t.jsonb "notifications"
+    t.datetime "last_read_at"
+    t.integer "inviter_id"
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["inviter_id"], name: "index_group_memberships_on_inviter_id"
+    t.index ["role"], name: "index_group_memberships_on_role"
+    t.index ["status"], name: "index_group_memberships_on_status"
+    t.index ["user_id", "group_id"], name: "index_group_memberships_on_user_id_and_group_id", unique: true
+    t.index ["user_id"], name: "index_group_memberships_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.integer "privacy"
+    t.text "description"
+    t.jsonb "settings"
+    t.integer "members_count", default: 0
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archived_at"], name: "index_groups_on_archived_at"
+    t.index ["privacy"], name: "index_groups_on_privacy"
+    t.index ["slug"], name: "index_groups_on_slug", unique: true
   end
 
   create_table "habit_completions", force: :cascade do |t|
@@ -219,6 +254,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_084645) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
   add_foreign_key "habit_completions", "habits"
   add_foreign_key "habits", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
