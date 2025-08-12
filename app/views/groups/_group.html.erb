@@ -10,11 +10,28 @@
           <span class="rounded-3xl px-3 py-0.5 text-xs dark:bg-slate-800 dark:text-gray-200"><%= group.role_for(current_user) %></span>
         </div>
       </div>
-      <div class="relative">
-        <button type="button" class="rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer p-0.5" id="group-actions-<%= group.id %>-menu" data-dropdown-placement="bottom" data-dropdown-toggle="group-actions-<%= group.id %>">
+      <div class="relative" data-controller="dropdown">
+        <button
+          type="button"
+          class="rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer p-0.5"
+          id="group-actions-<%= group.id %>-menu"
+          data-action="click->dropdown#toggle keydown.esc->dropdown#toggle click@window->dropdown#hide"
+          data-dropdown-target="button"
+        >
         <%= lucide_icon "ellipsis", class: "w-4 h-4" %>
       </button>
-      <div id="group-actions-<%= group.id %>" class="hidden z-10 absolute">
+      <div
+        role="menu"
+        id="group-actions-<%= group.id %>"
+        class="hidden z-10 absolute right-0 top-5"
+        data-dropdown-target="menu"
+        data-transition-enter="transition ease-out duration-100"
+        data-transition-enter-start="transform opacity-0 scale-95"
+        data-transition-enter-end="transform opacity-100 scale-100"
+        data-transition-leave="transition ease-in duration-75"
+        data-transition-leave-start="transform opacity-100 scale-100"
+        data-transition-leave-end="transform opacity-0 scale-95"
+      >
         <ul aria-labelledby="group-actions-<%= group.id %>-menu" class="dark:bg-gray-900 dark:text-gray-200 box-border p-1 rounded-md dark:border dark:border-gray-600 bg-white shadow-lg">
           <li class="">
             <%= link_to lucide_icon("square-pen", class: "h-3 w-3 mr-1") + " Edit", edit_group_path(group), data: { turbo_frame: "modal" }, class: "flex items-center text-sm text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-0.5 dark:hover:text-gray-500 pr-5" %>

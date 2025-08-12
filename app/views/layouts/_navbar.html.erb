@@ -5,8 +5,13 @@
           <button class="cursor-pointer text-gray-600 dark:text-gray-300 invisible sm:visible" data-controller="sidebar" data-action="click->sidebar#toggle">
             <%= lucide_icon("panel-left-close", class: "w-6 h-6 text-gray-600 dark:text-gray-300") %>
           </button>
-          <div class="flex items-center space-x-4">
-            <button id="dropdownUserAvatarButton" data-dropdown-placement="bottom" data-dropdown-toggle="dropdownAvatar" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer" type="button">
+          <div class="flex items-center space-x-4 relative" data-controller="dropdown">
+            <button
+              class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 cursor-pointer"
+              type="button"
+              data-action="click->dropdown#toggle keydown.esc->dropdown#toggle click@window->dropdown#hide"
+              data-dropdown-target="button"
+            >
             <span class="sr-only">Open user menu</span>
 
             <% if current_user.avatar.attached? %>
@@ -18,7 +23,17 @@
             <% end %>
             </button>
 
-            <div id="dropdownAvatar" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div
+              role="menu"
+              data-dropdown-target="menu"
+              data-transition-enter="transition ease-out duration-100"
+              data-transition-enter-start="transform opacity-0 scale-95"
+              data-transition-enter-end="transform opacity-100 scale-100"
+              data-transition-leave="transition ease-in duration-75"
+              data-transition-leave-start="transform opacity-100 scale-100"
+              data-transition-leave-end="transform opacity-0 scale-95"
+              class="z-10 absolute hidden right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
+            >
                 <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
                   <div class="font-semibold"><%= current_user.full_name %></div>
                   <div class="truncate"><%= current_user.email %></div>

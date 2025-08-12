@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
 import FlashController from "./flash_controller"
 application.register("flash", FlashController)
 
