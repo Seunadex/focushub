@@ -30,17 +30,10 @@
               <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
             </svg>
           </div>
-          <input
-            id="datepicker-actions"
-            name="task[due_date]"
-            value="<%= task.due_date&.strftime('%Y-%m-%d') %>"
-            datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today
-            datepicker-format="yyyy-mm-dd"
-            type="text"
-            class="block w-full ps-8 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition"
-            placeholder="Select date"
-            required
-          >
+          <%= form.date_field :due_date, required: true, class: "block w-full ps-10 p-2 rounded-md border border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-500 focus:ring-opacity-50 transition",
+            autocomplete: "off",
+            placeholder: "Select a date"
+          %>
         </div>
       </div>
       <div>
