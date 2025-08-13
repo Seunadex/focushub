@@ -4,28 +4,29 @@ RSpec.describe "HabitsController", type: :request do
   let(:user) { create(:user) }
   let!(:habit) { create(:habit, user: user) }
 
-  # before { sign_in user }
+  before { sign_in(user, scope: :user) }
 
   describe "GET /habits" do
     it "returns a successful response" do
       get habits_path
-      expect(response).to have_http_status(:redirect)
+      expect(response).to have_http_status(:ok)
     end
   end
 
   describe "GET /habits/new" do
-    xit "renders the new habit form" do
+    it "renders the new habit form" do
       get new_habit_path
-      expect(response).to have_http_status(:redirect)
+      expect(response).to have_http_status(:ok)
     end
   end
 
   describe "POST /habits" do
     context "with valid parameters" do
-      xit "creates a new habit" do
+      it "creates a new habit" do
         expect {
           post habits_path, params: { habit: { title: "Exercise", description: "Stay fit", frequency: "daily", target: 1 } }
         }.to change(Habit, :count).by(1)
+        expect(response).to have_http_status(:redirect)
       end
     end
 
@@ -39,21 +40,21 @@ RSpec.describe "HabitsController", type: :request do
   end
 
   describe "GET /habits/:id/edit" do
-    xit "renders the edit form" do
+    it "renders the edit form" do
       get edit_habit_path(habit)
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "PATCH /habits/:id" do
-    xit "updates the habit" do
+    it "updates the habit" do
       patch habit_path(habit), params: { habit: { title: "Updated Title" } }
       expect(habit.reload.title).to eq("Updated Title")
     end
   end
 
   describe "DELETE /habits/:id" do
-    xit "deletes the habit" do
+    it "deletes the habit" do
       expect {
         delete habit_path(habit)
       }.to change(Habit, :count).by(-1)
