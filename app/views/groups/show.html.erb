@@ -1,0 +1,78 @@
+<div class="w-full mx-auto p-6 bg-[#e7eefe]-50 dark:bg-slate-950 h-full">
+  <div class="flex justify-between items-center mb-6">
+    <div class="flex space-x-4">
+      <%= link_to groups_path, class: "text-3xl font-bold dark:text-white p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md h-fit" do %>
+        <%= lucide_icon "move-left", class: "h-6 w-6" %>
+      <% end %>
+      <div>
+        <span class="text-3xl font-semibold dark:text-white"><%= @group.name %><%= lucide_icon "#{group_role_icon(current_user, @group)}", class: "inline-block h-4 w-4 ml-2 text-yellow-600" %></span>
+        <p class="text-gray-500 mb-2 text-sm sm:text-md font-normal dark:text-gray-400"><%= @group.description %></p>
+        <div class="flex items-center space-x-4">
+          <p class="flex items-center text-gray-500 mb-4 text-sm sm:text-md font-normal dark:text-gray-400"><%= lucide_icon "users-round", class: "h-4 w-4 mr-2" %> <%= @group.members_count %> members</p>
+          <span class="bg-slate-800 px-2 rounded-lg text-white mb-4 text-xs font-normal dark:text-gray-400"><%= @group.role_for(current_user) %></span>
+        </div>
+      </div>
+    </div>
+    <div class="space-x-2 flex">
+      <button type="button" class="flex bg-transparent border border-gray-300 rounded-md px-4 py-1.5 text-sm items-center dark:text-white"><%= lucide_icon "user-plus", class: "h-4 w-4 mr-2" %> Invite Members</button>
+      <button type="button" class="flex bg-blue-700 text-white dark:bg-white dark:border dark:border-gray-800 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "message-circle", class: "h-4 w-4 mr-2" %> Start Chat</button>
+      <button type="button" class="flex bg-violet-700 text-white dark:bg-white dark:border border-gray-800 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "edit", class: "h-4 w-4 mr-2" %> Edit Group</button>
+    </div>
+  </div>
+
+  <div data-controller="tabs">
+    <div class="mb-6 bg-gray-200 rounded-sm dark:bg-slate-800">
+      <nav class="grid grid-cols-3 text-center" aria-label="Tabs">
+        <button
+          data-tab-target="activities"
+          data-action="click->tabs#click"
+          class="tab-button whitespace-nowrap cursor-pointer font-semibold text-md m-1 py-1 bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300"
+          aria-current="page">
+          Activities
+        </button>
+        <button
+          data-tab-target="members"
+          data-action="click->tabs#click"
+          class="tab-button whitespace-nowrap cursor-pointer font-semibold text-md m-1 py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          Members
+        </button>
+        <button
+          data-tab-target="about"
+          data-action="click->tabs#click"
+          class="tab-button whitespace-nowrap cursor-pointer font-semibold text-md m-1 py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          About
+        </button>
+      </nav>
+    </div>
+    <div data-tabs-target="activities" class="tab-content block">
+      <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:bg-slate-800 dark:border-slate-800 w-full">
+        <h2 class="text-2xl font-semibold mb-4 dark:text-white">Group Activities</h2>
+        <p class="text-gray-600 dark:text-gray-300">No recent activities.</p>
+      </div>
+    </div>
+
+    <div data-tabs-target="members" class="tab-content hidden">
+      <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:bg-slate-800 dark:border-slate-800 w-full">
+        <h2 class="text-2xl font-semibold mb-4 dark:text-white">Group Members (<%= @group.members_count %>)</h2>
+        <div>
+          <% @group.users.each do |user| %>
+            <div>
+              <div></div>
+              <div>
+                <p class="text-gray-600 dark:text-gray-300"><%= user.full_name %></p>
+                <span class="bg-slate-800 px-2 rounded-lg text-white mb-4 text-xs font-normal dark:text-gray-400"><%= @group.role_for(user) %></span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div data-tabs-target="about" class="tab-content hidden">
+      <h2 class="text-2xl font-semibold mb-4 dark:text-white">About This Group</h2>
+      <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
+        <p class="text-gray-600 dark:text-gray-300">Some description goes here.</p>
+      </div>
+    </div>
+  </div>
+</div>

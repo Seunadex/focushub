@@ -16,6 +16,9 @@ application.register("hello", HelloController)
 import SidebarController from "./sidebar_controller"
 application.register("sidebar", SidebarController)
 
+import TabsController from "./tabs_controller"
+application.register("tabs", TabsController)
+
 import TaskController from "./task_controller"
 application.register("task", TaskController)
 

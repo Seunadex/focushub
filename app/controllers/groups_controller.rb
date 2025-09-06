@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [ :edit, :update ]
+  before_action :set_group, only: [ :edit, :update, :show ]
 
   def index
     @groups = Group.all
@@ -11,6 +11,9 @@ class GroupsController < ApplicationController
   end
 
   def edit
+  end
+
+  def show
   end
 
   def update
