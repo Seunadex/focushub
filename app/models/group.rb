@@ -16,6 +16,14 @@ class Group < ApplicationRecord
     group_membership&.role || "member"
   end
 
+  def owned_by?(user)
+    group_memberships.exists?(user: user, role: "owner")
+  end
+
+  def member?(user)
+    group_memberships.exists?(user: user, status: "active")
+  end
+
   private
 
   def set_slug

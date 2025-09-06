@@ -11,20 +11,4 @@ class User < ApplicationRecord
   has_many :groups, through: :group_memberships
 
   validates_uniqueness_of :email, case_sensitive: false
-
-  def full_name
-    "#{first_name} #{last_name}".strip
-  end
-
-  def abbreviated_name
-    if first_name.present? && last_name.present?
-      "#{first_name.first.upcase}#{last_name.first.upcase}"
-    elsif first_name.present?
-      first_name.first.upcase
-    elsif last_name.present?
-      last_name.first.upcase
-    else
-      "U"
-    end
-  end
 end

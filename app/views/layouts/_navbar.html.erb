@@ -18,7 +18,7 @@
               <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full mx-auto" %>
             <% else %>
               <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-lg font-semibold mx-auto dark:bg-slate-900 dark:text-gray-400">
-                <span class="sidebar-text hidden md:inline"><%= current_user.abbreviated_name %></span>
+                <span class="sidebar-text hidden md:inline"><%= current_user.decorate.abbreviated_name %></span>
               </div>
             <% end %>
             </button>
@@ -35,7 +35,7 @@
               class="z-10 absolute hidden right-0 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600"
             >
                 <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                  <div class="font-semibold"><%= current_user.full_name %></div>
+                  <div class="font-semibold"><%= current_user.decorate.full_name %></div>
                   <div class="truncate"><%= current_user.email %></div>
                 </div>
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
