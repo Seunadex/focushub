@@ -31,7 +31,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :groups
+  resources :groups do
+    resources :group_invitations, only: [ :new, :create, :index, :destroy ]
+    member do
+      post :rotate_join_token
+    end
+  end
+
+  get "/invites/:token", to: "invites#show", as: :invite
+  post "/invites/:token/accept", to: "invites#accept", as: :accept_invite
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

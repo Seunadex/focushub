@@ -14,9 +14,12 @@
       </div>
     </div>
     <div class="space-x-2 flex sm:flex-row flex-col space-y-2 sm:space-y-0">
-      <button type="button" class="flex bg-transparent cursor-pointer border border-gray-300 rounded-md px-4 py-1.5 text-sm items-center dark:text-white"><%= lucide_icon "user-plus", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Invite Members</span></button>
-      <button type="button" class="flex bg-blue-700 cursor-pointer text-white dark:bg-white dark:border dark:border-gray-800 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "message-circle", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Start Chat</span></button>
-      <button type="button" class="flex bg-violet-700 cursor-pointer text-white dark:bg-white dark:border border-gray-800 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "edit", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Edit Group</span></button>
+      <%= link_to new_group_group_invitation_path(@group), data: { turbo_frame: "modal" }, class: "flex bg-transparent cursor-pointer border border-gray-300 rounded-md px-4 py-1.5 text-sm items-center dark:text-white" do %>
+        <%= lucide_icon "user-plus", class: "h-4 w-4 inline" %>
+        <span class="sm:inline hidden sm:ml-2">Invite Members</span>
+      <% end %>
+      <button type="button" class="flex bg-blue-700 cursor-pointer text-white dark:bg-violet-500 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "message-circle", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Start Chat</span></button>
+      <button type="button" class="flex bg-violet-700 cursor-pointer text-white dark:border dark:border-violet-500 dark:text-violet-500 dark:bg-transparent rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "edit", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Edit Group</span></button>
     </div>
   </div>
 
@@ -55,7 +58,7 @@
       <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:bg-slate-800 dark:border-slate-800 w-full">
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">Group Members (<%= @group.members_count %>)</h2>
         <div>
-          <% @group.users.decorate.each do |user| %>
+          <% @group.users.includes([:avatar_attachment]).decorate.each do |user| %>
             <div class="flex items-center space-x-2 mb-4">
               <% if user.avatar.attached? %>
                 <%= image_tag user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full" %>
@@ -65,7 +68,7 @@
                 </div>
               <% end %>
               <div>
-                <p class="text-gray-600 dark:text-gray-300"><%= user.full_name %></p>
+                <p class="text-gray-600 dark:text-gray-300"><%= user.full_name || user.email %></p>
                 <span class="bg-white px-2 border border-gray-300 rounded-lg text-gray-600 mb-4 text-xs font-normal dark:bg-white dark:text-gray-400"><%= @group.role_for(user) %></span>
               </div>
             </div>

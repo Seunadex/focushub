@@ -309,6 +309,8 @@ GEM
     public_suffix (6.0.2)
     puma (6.6.1)
       nio4r (~> 2.0)
+    pundit (2.5.0)
+      activesupport (>= 3.0.0)
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.16)
@@ -451,6 +453,7 @@ GEM
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.7)
+    table_print (1.5.7)
     thor (1.4.0)
     thruster (0.1.14)
     thruster (0.1.14-aarch64-linux)
@@ -523,6 +526,7 @@ DEPENDENCIES
   propshaft
   pry
   puma (>= 5.0)
+  pundit
   rails (~> 8.0.2)
   rspec-rails (~> 8.0.0)
   rubocop-rails-omakase
@@ -532,6 +536,7 @@ DEPENDENCIES
   solid_cache
   solid_queue
   stimulus-rails
+  table_print
   thruster
   turbo-rails
   tzinfo-data

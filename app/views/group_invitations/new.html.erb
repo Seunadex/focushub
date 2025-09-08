@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "modal" do %>
+  <%= render partial: "form", locals: { group: @group, invitation: @invitation, pending: @pending, shared_url: @shared_url } %>
+<% end %>

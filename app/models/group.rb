@@ -1,15 +1,26 @@
 class Group < ApplicationRecord
   has_many :group_memberships, dependent: :destroy
   has_many :users, through: :group_memberships
+  has_many :group_invitations, dependent: :destroy
 
   validates :name, presence: true
   validates :slug, uniqueness: true, presence: true
   validates :privacy, presence: true
 
-  enum :privacy, { public_group: 0, private_group: 1, secret_group: 2 }
+  enum :privacy, { public_access: 0, private_access: 1 }
 
   before_validation :set_slug, on: :create
-  before_validation :set_members_count, on: :create
+
+  def ensure_join_token!
+    return join_token if join_token.present?
+
+    update!(join_token: SecureRandom.urlsafe_base64(24))
+    join_token
+  end
+
+  def rotate_join_token
+    update!(join_token: SecureRandom.urlsafe_base64(24))
+  end
 
   def role_for(user)
     group_membership = group_memberships.find_by(user: user)
@@ -28,9 +39,5 @@ class Group < ApplicationRecord
 
   def set_slug
     self.slug = name.parameterize if name.present?
-  end
-
-  def set_members_count
-    self.members_count = 1
   end
 end

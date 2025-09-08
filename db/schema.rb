@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_11_185135) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_07_122431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_185135) do
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
+  create_table "group_invitations", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "inviter_id", null: false
+    t.string "invitee_email", null: false
+    t.bigint "invitee_id"
+    t.string "token", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "accepted_at"
+    t.datetime "revoked_at"
+    t.datetime "expires_at"
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_invitations_on_group_id"
+    t.index ["invitee_email"], name: "index_group_invitations_on_invitee_email"
+    t.index ["invitee_id"], name: "index_group_invitations_on_invitee_id"
+    t.index ["inviter_id"], name: "index_group_invitations_on_inviter_id"
+    t.index ["token"], name: "index_group_invitations_on_token", unique: true
+  end
+
   create_table "group_memberships", force: :cascade do |t|
     t.integer "role", null: false
     t.integer "status", null: false
@@ -87,7 +107,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_185135) do
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "join_token"
     t.index ["archived_at"], name: "index_groups_on_archived_at"
+    t.index ["join_token"], name: "index_groups_on_join_token", unique: true
     t.index ["privacy"], name: "index_groups_on_privacy"
     t.index ["slug"], name: "index_groups_on_slug", unique: true
   end
@@ -282,6 +304,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_11_185135) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "groups"
   add_foreign_key "activities", "users"
+  add_foreign_key "group_invitations", "groups"
+  add_foreign_key "group_invitations", "users", column: "inviter_id"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
   add_foreign_key "habit_completions", "habits"

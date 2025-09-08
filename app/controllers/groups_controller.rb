@@ -3,7 +3,15 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [ :edit, :update, :show ]
 
   def index
-    @groups = Group.all
+    @groups = Group
+      .left_outer_joins(:group_memberships)
+      .where(
+        "groups.privacy = :public OR (group_memberships.user_id = :uid AND group_memberships.status = :active)",
+        public: Group.privacies[:public_access],
+        uid: current_user.id,
+        active: GroupMembership.statuses[:active]
+      )
+      .distinct
   end
 
   def new

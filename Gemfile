@@ -36,6 +36,7 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 gem "mission_control-jobs"
+gem "pundit"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -54,6 +55,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "pry"
   gem "rspec-rails", "~> 8.0.0"
+  gem "table_print"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
