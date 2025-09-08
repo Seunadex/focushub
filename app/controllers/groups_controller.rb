@@ -1,6 +1,11 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [ :edit, :update, :show ]
+  before_action :set_group, only: [ :edit, :update, :show, :destroy ]
+  before_action :authorize_index!, only: [ :index ]
+  before_action :authorize_create!, only: [ :new, :create ]
+  before_action :authorize_show!, only: [ :show ]
+  before_action :authorize_update!, only: [ :edit, :update ]
+  before_action :authorize_destroy!, only: [ :destroy ]
 
   def index
     @groups = Group
@@ -105,5 +110,30 @@ class GroupsController < ApplicationController
 
   def set_group
     @group = Group.find(params[:id])
+  end
+
+  def authorize_index!
+    policy = GroupPolicy.new(current_user, nil)
+    redirect_to root_path, alert: "You do not have access to this page." unless policy.index?
+  end
+
+  def authorize_create!
+    policy = GroupPolicy.new(current_user, Group.new)
+    redirect_to groups_path, alert: "You do not have permission to create groups." unless policy.create?
+  end
+
+  def authorize_show!
+    policy = GroupPolicy.new(current_user, @group)
+    redirect_to groups_path, alert: "You do not have access to this group." unless policy.show?
+  end
+
+  def authorize_update!
+    policy = GroupPolicy.new(current_user, @group)
+    redirect_to group_path(@group), alert: "You do not have permission to edit this group." unless policy.update?
+  end
+
+  def authorize_destroy!
+    policy = GroupPolicy.new(current_user, @group)
+    redirect_to group_path(@group), alert: "You do not have permission to delete this group." unless policy.destroy?
   end
 end
