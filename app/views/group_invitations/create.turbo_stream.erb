@@ -1,0 +1,12 @@
+<% if @invitation&.persisted? %>
+  <%= turbo_stream.prepend "pending_invites",
+        partial: "group_invitations/invitation_chip",
+        locals: { invitation: @invitation, group: @group } %>
+  <%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<% else %>
+  <%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+  <%= turbo_stream.replace "modal",
+        partial: "group_invitations/form",
+        locals: { group: @group, invitation: @invitation, pending: @pending, shared_url: @shared_url } %>
+<% end %>
+

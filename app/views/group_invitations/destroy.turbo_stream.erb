@@ -1,0 +1,7 @@
+<% if @invitation&.revoked? %>
+  <%= turbo_stream.remove "group_invitation_#{@invitation.id}" %>
+  <%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<% else %>
+  <%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<% end %>
+

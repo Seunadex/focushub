@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "modal" do %>
+  <%= render partial: "group_invitations/form",
+             locals: { group: @group, invitation: @invitation, pending: @pending, shared_url: @shared_url } %>
+<% end %>
+
