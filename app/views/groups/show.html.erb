@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center mb-6">
     <div class="flex space-x-4">
       <%= link_to groups_path, class: "text-3xl font-bold dark:text-white p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md h-fit" do %>
-        <%= lucide_icon "move-left", class: "h-6 w-6" %>
+        <%= lucide_icon "move-left", class: "h-4 w-4 sm:h-6 sm:w-6" %>
       <% end %>
       <div>
         <span class="text-lg sm:text-3xl font-semibold dark:text-white"><%= @group.name %><%= lucide_icon "#{group_role_icon(current_user, @group)}", class: "inline-block h-4 w-4 ml-2 text-yellow-600" %></span>
@@ -14,12 +14,18 @@
       </div>
     </div>
     <div class="space-x-2 flex sm:flex-row flex-col space-y-2 sm:space-y-0">
-      <%= link_to new_group_group_invitation_path(@group), data: { turbo_frame: "modal" }, class: "flex bg-transparent cursor-pointer border border-gray-300 rounded-md px-4 py-1.5 text-sm items-center dark:text-white" do %>
-        <%= lucide_icon "user-plus", class: "h-4 w-4 inline" %>
-        <span class="sm:inline hidden sm:ml-2">Invite Members</span>
+      <% if GroupInvitationPolicy.new(current_user, @group).invite? %>
+        <%= link_to new_group_group_invitation_path(@group), data: { turbo_frame: "modal" }, class: "flex bg-transparent cursor-pointer border border-gray-300 rounded-md px-4 py-1.5 text-sm items-center dark:text-white" do %>
+          <%= lucide_icon "user-plus", class: "h-4 w-4 inline" %>
+          <span class="sm:inline hidden sm:ml-2">Invite Members</span>
+        <% end %>
       <% end %>
       <button type="button" class="flex bg-blue-700 cursor-pointer text-white dark:bg-violet-500 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "message-circle", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Start Chat</span></button>
-      <button type="button" class="flex bg-violet-700 cursor-pointer text-white dark:border dark:border-violet-500 dark:text-violet-500 dark:bg-transparent rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "edit", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Edit Group</span></button>
+      <% if GroupPolicy.new(current_user, @group).update? %>
+        <%= link_to edit_group_path(@group), data: { turbo_frame: "modal" }, class: "flex bg-violet-700 cursor-pointer text-white dark:border dark:border-violet-500 dark:text-violet-500 dark:bg-transparent rounded-md px-4 py-1.5 text-sm items-center" do %>
+          <%= lucide_icon "edit", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2">Edit Group</span>
+        <% end %>
+      <% end %>
     </div>
   </div>
 
@@ -78,9 +84,37 @@
     </div>
 
     <div data-tabs-target="about" class="tab-content hidden">
-      <h2 class="text-2xl font-semibold mb-4 dark:text-white">About This Group</h2>
-      <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
-        <p class="text-gray-600 dark:text-gray-300">Some description goes here.</p>
+      <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:bg-slate-800 dark:border-slate-800 w-full mb-4">
+        <h2 class="text-2xl font-semibold mb-4 dark:text-white">About This Group</h2>
+        <ul class="divide-y divide-gray-100 dark:divide-slate-700">
+          <li class="py-2 flex items-center justify-between">
+            <span class="text-gray-500 text-sm dark:text-gray-400">Privacy</span>
+            <span class="text-gray-900 dark:text-gray-200 flex items-center">
+              <%= lucide_icon(@group.public_access? ? "globe" : "lock", class: "h-4 w-4 mr-2") %>
+              <%= @group.privacy.humanize.split(" ").first %>
+            </span>
+          </li>
+          <li class="py-2 flex items-center justify-between">
+            <span class="text-gray-500 text-sm dark:text-gray-400">Created</span>
+            <span class="text-gray-900 dark:text-gray-200"><%= @group.created_at.strftime("%B %d, %Y") %></span>
+          </li>
+          <li class="py-2 flex items-center justify-between">
+            <span class="text-gray-500 text-sm dark:text-gray-400">Members</span>
+            <span class="text-gray-900 dark:text-gray-200 flex items-center"><%= lucide_icon "users", class: "h-4 w-4 mr-2" %><%= @group.members_count %></span>
+          </li>
+          <% if @group.archived_at.present? %>
+            <li class="py-2 flex items-center justify-between">
+              <span class="text-gray-500 text-sm dark:text-gray-400">Status</span>
+              <span class="text-gray-900 dark:text-gray-200 flex items-center">
+                <%= lucide_icon "archive", class: "h-4 w-4 mr-2" %> Archived
+              </span>
+            </li>
+            <li class="py-2 flex items-center justify-between">
+              <span class="text-gray-500 text-sm dark:text-gray-400">Archived At</span>
+              <span class="text-gray-900 dark:text-gray-200"><%= @group.archived_at.strftime("%B %d, %Y") %></span>
+            </li>
+          <% end %>
+        </ul>
       </div>
     </div>
   </div>
