@@ -12,7 +12,7 @@ class GroupPolicy
 
   def show?
     return false unless user && group
-    group.public_access? || group.member?(user)
+     group.member?(user)
   end
 
   def new?

@@ -52,8 +52,10 @@
     <span class="text-gray-500 text-xs ml-2">Created: <%= group.created_at.strftime("%b %d, %Y") %></span>
   </div>
   <% if group.member?(current_user) %>
-    <%= link_to "View Group", group_path(group), data: { turbo: false }, class: "mt-4 w-full flex items-center justify-center p-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 dark:bg-violet-500 dark:text-white" %>
+    <%= link_to "View Group", group_path(group), data: { turbo_frame: "_top" }, class: "mt-4 w-full flex items-center justify-center p-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 dark:bg-violet-500 dark:text-white cursor-pointer" %>
   <% else %>
-    <%= button_to "Join Group", group_path(group), method: :post, class: "mt-4 w-full flex items-center justify-center p-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-violet-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 dark:bg-violet-500 dark:text-white" %>
+    <% if group.public_access? %>
+      <%= button_to "Join Group", join_group_path(group.ensure_join_token!), method: :post, data: { turbo: false }, class: "mt-4 w-full flex items-center justify-center p-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-violet-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 dark:bg-violet-500 dark:text-white cursor-pointer" %>
+    <% end %>
   <% end %>
 </div>

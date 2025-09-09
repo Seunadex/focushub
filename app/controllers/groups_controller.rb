@@ -99,7 +99,12 @@ class GroupsController < ApplicationController
 
   def authorize_show!
     policy = GroupPolicy.new(current_user, @group)
-    redirect_to groups_path, alert: "You do not have access to this group." unless policy.show?
+    return if policy.show?
+    alert_message = @group.public_access? ? "You do not have access to this group. Click join to view group." : "This group is private. Request access to join."
+    respond_to do |format|
+      format.turbo_stream { flash.now[:alert] = alert_message; render :show }
+      format.html { redirect_to groups_path, alert: alert_message }
+    end
   end
 
   def authorize_update!
