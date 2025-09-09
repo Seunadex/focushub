@@ -4,7 +4,7 @@
 #
 
 app = 'focus-hub'
-primary_region = 'lhr'
+primary_region = 'jnb'
 console_command = '/rails/bin/rails console'
 
 [build]
