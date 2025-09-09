@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for focus-hub on 2025-08-02T20:39:00+01:00
+# fly.toml app configuration file generated for focus-hub on 2025-09-10T00:03:27+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -14,7 +14,7 @@ console_command = '/rails/bin/rails console'
   SOLID_QUEUE_IN_PUMA = 'YES'
 
 [processes]
-  app = "./bin/rails server"
+  app = './bin/rails server'
 
 [http_service]
   internal_port = 8080
@@ -36,5 +36,17 @@ console_command = '/rails/bin/rails console'
     [http_service.checks.headers]
       X-Forwarded-Proto = 'https'
 
+  [[http_service.checks]]
+    interval = '10s'
+    timeout = '2s'
+    grace_period = '5s'
+    method = 'GET'
+    path = '/up'
+    protocol = 'http'
+    tls_skip_verify = false
+
+    [http_service.checks.headers]
+      X-Forwarded-Proto = 'https'
+
 [[vm]]
-  size = 'shared-cpu-1x'
+  size = 'shared-cpu-2x'
