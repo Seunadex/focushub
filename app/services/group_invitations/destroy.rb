@@ -1,5 +1,5 @@
 module GroupInvitations
-  class DestroyService
+  class Destroy
     Result = Struct.new(:success?, :invitation, :error_message, keyword_init: true)
 
     def self.call(group:, id:)

@@ -37,6 +37,7 @@ class GroupInvitationsController < ApplicationController
     end
 
     notice_message = "Invitation sent successfully."
+    GroupInvitationMailer.with(invitation: @invitation).invite.deliver_later
     respond_to do |format|
       flash.now[:notice] = notice_message
       format.turbo_stream
