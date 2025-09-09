@@ -37,19 +37,22 @@
           data-action="click->tabs#click"
           class="tab-button whitespace-nowrap cursor-pointer font-semibold text-md m-1 py-1 bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300"
           aria-current="page">
-          Activities
+          <span class="sm:hidden inline-flex w-full justify-center"><%= lucide_icon "activity", class: "h-4 w-4" %></span>
+          <span class="hidden sm:inline">Activities</span>
         </button>
         <button
           data-tab-target="members"
           data-action="click->tabs#click"
           class="tab-button whitespace-nowrap cursor-pointer font-semibold text-md m-1 py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-          Members
+          <span class="sm:hidden inline-flex w-full justify-center"><%= lucide_icon "users", class: "h-4 w-4" %></span>
+          <span class="hidden sm:inline">Members</span>
         </button>
         <button
           data-tab-target="about"
           data-action="click->tabs#click"
           class="tab-button whitespace-nowrap cursor-pointer font-semibold text-md m-1 py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-          About
+          <span class="sm:hidden inline-flex w-full justify-center"><%= lucide_icon "info", class: "h-4 w-4" %></span>
+          <span class="hidden sm:inline">About</span>
         </button>
       </nav>
     </div>

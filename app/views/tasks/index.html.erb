@@ -69,9 +69,35 @@
     <% end %>
     <div class="mb-6 bg-gray-200 rounded-sm dark:bg-slate-800">
       <nav class="grid grid-cols-3 text-center" aria-label="Tabs">
-        <%= link_to "All Tasks", tasks_path, data: { turbo_frame: "task_list" }, class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status].blank? ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" %>
-        <%= link_to "Pending", tasks_path(status: 'pending'), data: { turbo_frame: "task_list" }, class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status] == 'pending' ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" %>
-        <%= link_to "Completed", tasks_path(status: 'completed'), data: { turbo_frame: "task_list" }, class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status] == 'completed' ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" %>
+        <%= link_to tasks_path,
+          data: { turbo_frame: "task_list" },
+          aria: { label: "All Tasks" },
+          class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status].blank? ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" do %>
+          <span class="sm:hidden inline-flex items-center justify-center">
+            <%= lucide_icon('square-check-big', class: 'w-5 h-5') %>
+          </span>
+          <span class="hidden sm:inline">All Tasks</span>
+        <% end %>
+
+        <%= link_to tasks_path(status: 'pending'),
+          data: { turbo_frame: "task_list" },
+          aria: { label: "Pending" },
+          class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status] == 'pending' ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" do %>
+          <span class="sm:hidden inline-flex items-center justify-center">
+            <%= lucide_icon('clock', class: 'w-5 h-5') %>
+          </span>
+          <span class="hidden sm:inline">Pending</span>
+        <% end %>
+
+        <%= link_to tasks_path(status: 'completed'),
+          data: { turbo_frame: "task_list" },
+          aria: { label: "Completed" },
+          class: "whitespace-nowrap font-semibold text-md m-1 py-1 #{params[:status] == 'completed' ? 'bg-white rounded-sm dark:bg-gray-900 dark:text-gray-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}" do %>
+          <span class="sm:hidden inline-flex items-center justify-center">
+            <%= lucide_icon('circle-check-big', class: 'w-5 h-5') %>
+          </span>
+          <span class="hidden sm:inline">Completed</span>
+        <% end %>
       </nav>
     </div>
     <%= turbo_frame_tag "task_list_content" do %>
