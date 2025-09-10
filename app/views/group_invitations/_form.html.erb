@@ -26,9 +26,9 @@
 
       <div>
         <h4 class="text-sm">Share Invite Link</h4>
-        <div class="flex gap-2">
+        <div class="flex gap-2" data-controller="clip" data-clip-message-value="Invite link copied to clipboard.">
           <input type="text" class="text-sm border border-gray-300 block px-3 py-2 rounded text-sm text-gray-600 w-full" value="<%= shared_url %>" readonly
-                data-controller="clip" data-clip-target="source">
+                 data-clip-target="source">
           <button class="rounded items-center cursor-pointer p-3 bg-transparent border border-gray-300 hover:bg-gray-200" data-action="click->clip#copy"><%= lucide_icon("copy", class: "h-4 w-4") %></button>
           <%= button_to lucide_icon("rotate-cw", class: "h-4 w-4"), rotate_join_token_group_path(group),
                         method: :post,
@@ -40,4 +40,3 @@
     </div>
   </div>
 </div>
-

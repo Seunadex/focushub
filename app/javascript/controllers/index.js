@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ClipController from "./clip_controller"
+application.register("clip", ClipController)
+
 import DropdownController from "./dropdown_controller"
 application.register("dropdown", DropdownController)
 
