@@ -31,7 +31,9 @@
         <%= render "layouts/sidebar" %>
       <% end %>
       <div class="w-full">
-        <%= render "layouts/navbar" %>
+        <% if user_signed_in? %>
+          <%= render "layouts/navbar" %>
+        <% end %>
         <%= yield %>
       </div>
     </main>

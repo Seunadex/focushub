@@ -31,16 +31,21 @@
       data-transition-leave-start="transform opacity-100 scale-100"
       data-transition-leave-end="transform opacity-0 scale-95"
     >
+    <% policy = GroupPolicy.new(current_user, group) %>
       <ul aria-labelledby="group-actions-<%= group.id %>-menu" class="dark:bg-gray-900 dark:text-gray-200 box-border p-1 rounded-md dark:border dark:border-gray-600 bg-white shadow-lg">
-        <li class="">
-          <%= link_to lucide_icon("square-pen", class: "h-4 w-4 mr-1") + " Edit", edit_group_path(group), data: { turbo_frame: "modal" }, class: "flex items-center text-md text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-1 dark:hover:text-gray-500 pr-10" %>
-        </li>
-        <li class="">
-          <%= button_to lucide_icon("archive", class: "h-4 w-4 mr-1") + " Archive", "", method: :patch, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-md text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-1 dark:hover:text-gray-500 pr-10" %>
-        </li>
-        <li class="">
-          <%= button_to lucide_icon("trash-2", class: "h-4 w-4 mr-1") + " Delete", group_path(group), method: :delete, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-md text-red-600 hover:bg-gray-100 rounded-sm w-full rounded-sm px-2 py-1" %>
-        </li>
+        <% if policy.update? %>
+          <li class="">
+            <%= link_to lucide_icon("square-pen", class: "h-4 w-4 mr-1") + " Edit", edit_group_path(group), data: { turbo_frame: "modal" }, class: "flex items-center text-md text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-1 dark:hover:text-gray-500 pr-10" %>
+          </li>
+          <li class="">
+            <%= button_to lucide_icon("archive", class: "h-4 w-4 mr-1") + " Archive", "", method: :patch, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-md text-gray-700 hover:bg-gray-100 w-full dark:text-gray-300 rounded-sm px-2 py-1 dark:hover:text-gray-500 pr-10" %>
+          </li>
+        <% end %>
+        <% if policy.destroy? %>
+          <li class="">
+            <%= button_to lucide_icon("trash-2", class: "h-4 w-4 mr-1") + " Delete", group_path(group), method: :delete, data: { turbo_stream: true, turbo_confirm: "Are you sure?" }, class: "cursor-pointer flex items-center text-md text-red-600 hover:bg-gray-100 rounded-sm w-full rounded-sm px-2 py-1" %>
+          </li>
+        <% end %>
       </ul>
     </div>
     </div>
