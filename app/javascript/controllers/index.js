@@ -4,6 +4,12 @@
 
 import { application } from "./application"
 
+import ChatComposeController from "./chat_compose_controller"
+application.register("chat-compose", ChatComposeController)
+
+import ChatScrollController from "./chat_scroll_controller"
+application.register("chat-scroll", ChatScrollController)
+
 import ClipController from "./clip_controller"
 application.register("clip", ClipController)
 

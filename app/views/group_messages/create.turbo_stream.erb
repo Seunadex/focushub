@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "new_group_message" do %>
+  <%= render "group_messages/form", group: @group, message: @group.group_messages.new %>
+<% end %>

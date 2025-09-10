@@ -20,7 +20,10 @@
           <span class="sm:inline hidden sm:ml-2 whitespace-nowrap">Invite Members</span>
         <% end %>
       <% end %>
-      <button type="button" class="flex bg-blue-700 cursor-pointer text-white dark:bg-violet-500 rounded-md px-4 py-1.5 text-sm items-center"><%= lucide_icon "message-circle", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2 whitespace-nowrap">Start Chat</span></button>
+      <%= link_to group_group_messages_path(@group), data: { turbo_frame: "modal" }, class: "flex bg-blue-700 cursor-pointer text-white dark:bg-violet-500 rounded-md px-4 py-1.5 text-sm items-center" do %>
+        <%= lucide_icon "message-circle", class: "h-4 w-4" %>
+        <span class="sm:inline hidden sm:ml-2 whitespace-nowrap">Start Chat</span>
+      <% end %>
       <% if GroupPolicy.new(current_user, @group).update? %>
         <%= link_to edit_group_path(@group), data: { turbo_frame: "modal" }, class: "flex bg-violet-700 cursor-pointer text-white dark:border dark:border-violet-500 dark:text-violet-500 dark:bg-transparent rounded-md px-4 py-1.5 text-sm items-center" do %>
           <%= lucide_icon "edit", class: "h-4 w-4" %> <span class="sm:inline hidden sm:ml-2 whitespace-nowrap">Edit Group</span>

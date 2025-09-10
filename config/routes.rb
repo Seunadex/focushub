@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :group_invitations, only: [ :new, :create, :index, :destroy ]
+    resources :group_messages, only: [ :create, :index ]
     member do
       post :rotate_join_token
     end
