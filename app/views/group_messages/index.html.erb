@@ -2,7 +2,7 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/90" data-controller="turbo-modal" data-turbo-modal-target="modal" data-action="keyup@window->turbo-modal#closeWithEscape click@window->turbo-modal#closeWithClickOutside">
     <div role="dialog" aria-modal="true" class="w-4/5 sm:w-full max-w-4xl mx-auto bg-white dark:bg-slate-950 p-6 rounded-lg shadow-xl transition-all dark:border dark:border-slate-800">
       <div class="flex items-center justify-between p-2">
-        <h3 class="text-lg font-semibold text-white flex space-x-2"><%= lucide_icon("message-circle") %> <span><%= @group.name %><span></h3>
+        <h3 class="text-lg font-semibold dark:text-white text-gray-600 flex space-x-2"><%= lucide_icon("message-circle") %> <span><%= @group.name %><span></h3>
         <button_tag data-action="click->turbo-modal#close" class="p-2">
           <%= lucide_icon "x", class: "h-5 w-5 text-gray-600 hover:text-gray-800" %>
         </button_tag>

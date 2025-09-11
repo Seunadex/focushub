@@ -62,41 +62,49 @@ class HabitsController < ApplicationController
 
   def archive_toggle
     return unless params[:id].present?
-    was_active = @habit.active?
-    action = was_active ? "archived" : "restored"
-    action_request = was_active ? @habit.archive! : @habit.restore!
-    if action_request
+    result = Habits::ToggleArchive.new(habit: @habit).call
+
+    if result.success?
+      was_active = result.value[:was_active]
+      action = result.value[:action]
+
       flash[:notice] = "Habit #{action} successfully."
-      habits = case was_active
-      when true then current_user.habits.active
-      when false then current_user.habits.archived
-      else current_user.habits
-      end
+      habits = was_active ? current_user.habits.active : current_user.habits.archived
       @pagy, @habits = pagy(habits.order(created_at: :desc), limit: 15)
+
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to habits_path, notice: "Habit #{action} successfully." }
       end
     else
       respond_to do |format|
-        flash.now[:alert] = "Failed to #{action} habit."
+        flash.now[:alert] = result.error || "Failed to update habit."
         format.turbo_stream { render turbo_stream: turbo_stream.update("flash", partial: "shared/flash") }
-        format.html { redirect_to habits_path, alert: "Failed to #{action} habit." }
+        format.html { redirect_to habits_path, alert: result.error || "Failed to update habit." }
       end
     end
   end
 
   def complete
     return unless params[:id].present?
-    completed_status = ActiveModel::Type::Boolean.new.cast(params[:completed])
-    completed_action = completed_status ? "complete!" : "undo_complete!"
-    if @habit.send(completed_action)
+    service = Habits::Complete.new(habit: @habit, completed: params[:completed])
+    result = service.call
+
+    if result.success?
+      completed_status = result.value[:completed]
       @todays_progress = current_user.habits.active.filter { |habit| habit.completed_today? }.count
       @best_streaks = BestStreaksQuery.for_user(current_user)
       flash.now[:notice] = completed_status ? "'#{@habit.title}' marked as complete." : "'#{@habit.title}' marked as incomplete."
+
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to habits_path, notice: flash.now[:notice] }
+      end
+    else
+      respond_to do |format|
+        flash.now[:alert] = result.error || "Failed to update habit."
+        format.turbo_stream { render turbo_stream: turbo_stream.update("flash", partial: "shared/flash") }
+        format.html { redirect_to habits_path, alert: result.error || "Failed to update habit." }
       end
     end
   end

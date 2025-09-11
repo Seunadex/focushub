@@ -1,4 +1,5 @@
 module GroupsHelper
+  # Returns an icon name for a user's role in the group
   def group_role_icon(user, group)
     role = group.role_for(user)
     case role
@@ -7,8 +8,6 @@ module GroupsHelper
     when "admin"
       "shield-check"
     when "member"
-      "users"
-    else
       "users"
     end
   end

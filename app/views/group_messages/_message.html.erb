@@ -15,6 +15,6 @@
       · <span class="text-xs text-gray-600"><%= time_ago_in_words(message.created_at) %> ago</span>
     </div>
 
-    <div class="text-sm text-gray-100"><%= sanitize(message.body) %></div>
+    <div class="text-sm text-gray-600 dark:text-gray-100"><%= sanitize(message.body) %></div>
   </div>
 </div>
