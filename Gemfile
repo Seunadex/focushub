@@ -56,6 +56,7 @@ group :development, :test do
   gem "pry"
   gem "rspec-rails", "~> 8.0.0"
   gem "table_print"
+  gem "simplecov", require: false
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
