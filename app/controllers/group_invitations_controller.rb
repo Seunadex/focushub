@@ -41,7 +41,7 @@ class GroupInvitationsController < ApplicationController
     respond_to do |format|
       flash.now[:notice] = notice_message
       format.turbo_stream
-      format.html { redirect_to group_invitations_path(@group), notice: notice_message }
+      format.html { redirect_to group_group_invitations_path(@group), notice: notice_message }
     end
   end
 
@@ -54,7 +54,7 @@ class GroupInvitationsController < ApplicationController
       respond_to do |format|
         flash.now[:alert] = alert_message
         format.turbo_stream
-        format.html { redirect_to group_invitations_path(@group), alert: alert_message }
+        format.html { redirect_to group_group_invitations_path(@group), alert: alert_message }
       end
       return
     end
@@ -63,7 +63,7 @@ class GroupInvitationsController < ApplicationController
     respond_to do |format|
       flash.now[:notice] = notice_message
       format.turbo_stream
-      format.html { redirect_to group_invitations_path(@group), notice: notice_message }
+      format.html { redirect_to group_group_invitations_path(@group), notice: notice_message }
     end
   end
 
