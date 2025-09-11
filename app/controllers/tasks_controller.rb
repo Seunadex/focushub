@@ -25,7 +25,7 @@ class TasksController < ApplicationController
     result = TaskManager::Create.new(user: current_user, params: task_params).call
     if result.success?
       @task = result.value
-      @pagy, @tasks = paginated_tasks
+      @pagy, @tasks = pagy(current_user.tasks.order(due_date: :desc))
       flash.now[:notice] = "Task created successfully."
       respond_to do |format|
         format.turbo_stream
