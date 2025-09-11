@@ -1,3 +1,4 @@
+![Coverage Status](https://coveralls.io/repos/github/ORG/REPO/badge.svg?branch=main)
 # FocusHub
 
 Tasks + Habits in one fast, motivating dashboard. Built with **Rails 8**, **Hotwire (Turbo + Stimulus)**, and **Tailwind CSS**. Track daily work, build routines, celebrate streaks, and keep each other accountable in **Groups**.

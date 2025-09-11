@@ -1,0 +1,37 @@
+name: Test with coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      # For private repos only:
+      # COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
+
+      - name: Yarn install
+        run: |
+          if [ -f yarn.lock ]; then
+            corepack enable
+            yarn --frozen-lockfile
+          fi
+
+      - name: Prepare DB
+        if: hashFiles('**/config/database.yml') != ''
+        run: bin/rails db:prepare
+
+      - name: Run tests
+        run: |
+          bundle exec rspec || bundle exec rake test
