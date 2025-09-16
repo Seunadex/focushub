@@ -1,20 +1,23 @@
-# fly.toml app configuration file generated for focus-hub on 2025-08-02T20:39:00+01:00
+# fly.toml app configuration file generated for focus-hub on 2025-09-10T00:56:39+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'focus-hub'
-primary_region = 'lhr'
+primary_region = 'jnb'
 console_command = '/rails/bin/rails console'
 
 [build]
 
+[deploy]
+  release_command = "./bin/rails db:prepare"
+
 [env]
   PORT = '8080'
-  SOLID_QUEUE_IN_PUMA = 'YES'
 
 [processes]
-  app = "./bin/rails server"
+  app = './bin/rails server'
+  solidq = 'bundle exec rake solid_queue:start'
 
 [http_service]
   internal_port = 8080
@@ -37,4 +40,6 @@ console_command = '/rails/bin/rails console'
       X-Forwarded-Proto = 'https'
 
 [[vm]]
-  size = 'shared-cpu-1x'
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 2

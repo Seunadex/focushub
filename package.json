@@ -13,7 +13,7 @@
     "@hotwired/turbo-rails": "^8.0.16",
     "@tailwindcss/cli": "^4.1.11",
     "animate.css": "^4.1.1",
-    "flowbite": "^3.1.2",
+    "el-transition": "^0.0.7",
     "tailwindcss": "^4.1.11"
   },
   "packageManager": "yarn@1.22.22"

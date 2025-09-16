@@ -23,6 +23,7 @@ gem "devise"
 gem "hotwire-spark", "~> 0.1.13"
 gem "pagy"
 gem "animate-rails"
+gem "draper"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -35,6 +36,7 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 gem "mission_control-jobs"
+gem "pundit"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -47,13 +49,16 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
+gem "coveralls_reborn", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-  gem "annotate"
   gem "pry"
   gem "rspec-rails", "~> 8.0.0"
+  gem "table_print"
+  gem "simplecov", require: false
+  gem "method_tracer", git: "https://github.com/Seunadex/method_tracer.git", branch: "main"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -66,6 +71,8 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "bullet"
+  gem "letter_opener"
+  gem "letter_opener_web"
 end
 
 group :test do

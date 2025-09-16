@@ -8,7 +8,7 @@
 
     <div class="<%= "#{bg_color} text-white px-4 py-2 rounded shadow mb-2 flex items-center animate__animated animate__bounceIn" %>">
       <%= lucide_icon(icon) %>
-      <span class="ml-2"><%= message %></span>
+      <span class="ml-2 text-sm"><%= message %></span>
       <% if type.to_sym == :notice %>
         <button data-action="click->flash#dismiss" class="ml-5 text-white hover:text-gray-200 cursor-pointer">
           <%= lucide_icon("x") %>

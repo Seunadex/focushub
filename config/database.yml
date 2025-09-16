@@ -12,10 +12,6 @@ default: &default
 development:
   <<: *default
   database: focushub_development
-  # cable:
-    # <<: *default
-    # database: focushub_development_cable
-    # migrations_paths: db/cable_migrate
 
 test:
   <<: *default
@@ -33,14 +29,14 @@ production:
     <<: *primary_production
     database: focushub_production_cache
     migrations_paths: db/cache_migrate
-    url: <%= URI.parse(ENV["DATABASE_URL"]).tap { |url| url.path += "_cache" } if ENV["DATABASE_URL"] %>
+    url: <%= if Rails.env.production? && ENV["DATABASE_URL"]&.match(%r{/[^/?#]+$}) then ENV["DATABASE_URL"].sub(%r{(/[^/?#]+)$}, "_cache") end %>
   queue:
     <<: *primary_production
     database: focushub_production_queue
     migrations_paths: db/queue_migrate
-    url: <%= URI.parse(ENV["DATABASE_URL"]).tap { |url| url.path += "_queue" } if ENV["DATABASE_URL"] %>
+    url: <%= if Rails.env.production? && ENV["DATABASE_URL"]&.match(%r{/[^/?#]+$}) then ENV["DATABASE_URL"].sub(%r{(/[^/?#]+)$}, "_queue") end %>
   cable:
     <<: *primary_production
     database: focushub_production_cable
     migrations_paths: db/cable_migrate
-    url: <%= URI.parse(ENV["DATABASE_URL"]).tap { |url| url.path += "_cable" } if ENV["DATABASE_URL"] %>
+    url: <%= if Rails.env.production? && ENV["DATABASE_URL"]&.match(%r{/[^/?#]+$}) then ENV["DATABASE_URL"].sub(%r{(/[^/?#]+)$}, "_cable") end %>

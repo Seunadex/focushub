@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   devise_for :users do
     get "/preferences" => "registrations#edit", :as => "edit_user_registration"
     put "users" => "registrations#update", :as => "user_registration"
@@ -30,6 +31,18 @@ Rails.application.routes.draw do
       post :complete, to: "habits#complete", as: :complete
     end
   end
+
+  resources :groups do
+    resources :group_invitations, only: [ :new, :create, :index, :destroy ]
+    resources :group_messages, only: [ :create, :index ]
+    member do
+      post :rotate_join_token
+    end
+  end
+
+  get "/invites/:token", to: "invites#show", as: :invite
+  post "/invites/:token/accept", to: "invites#accept_invitation", as: :accept_invitation
+  post "/invites/:token/join", to: "invites#join_group", as: :join_group
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

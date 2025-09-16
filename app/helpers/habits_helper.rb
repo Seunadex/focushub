@@ -9,7 +9,7 @@ module HabitsHelper
       "#{streak} consecutive days"
     when "weekly"
       "#{streak} consecutive weeks"
-    when "bi-weekly"
+    when "bi_weekly"
       "#{streak} consecutive bi-weeks"
     when "monthly"
       "#{streak} consecutive months"

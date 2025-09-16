@@ -1,0 +1,3 @@
+<p>You’ve been invited to join <strong><%= @group.name %></strong>.</p>
+<p><a href="<%= @accept_url %>">Accept invitation</a></p>
+<p>This link expires on <%= @invitation.expires_at&.to_date %>.</p>

@@ -5,6 +5,18 @@ RSpec.describe HabitCompletion, type: :model do
     it { is_expected.to belong_to(:habit).inverse_of(:habit_completions) }
   end
 
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:habit) }
+    it { is_expected.to validate_presence_of(:completed_on) }
+
+    it "is invalid when completed_on is in the future" do
+      habit = create(:habit)
+      completion = build(:habit_completion, habit: habit, completed_on: Date.current + 1.day)
+      expect(completion).to be_invalid
+      expect(completion.errors[:completed_on]).to include("cannot be in the future")
+    end
+  end
+
   describe "callbacks" do
     let(:habit) { create(:habit) }
 

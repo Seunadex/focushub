@@ -1,0 +1,4 @@
+<%= turbo_stream.update "modal", "" %>
+<%= turbo_stream.prepend "flash", partial: "shared/flash" %>
+<%= turbo_stream.update "group_list", partial: "groups/group_list", locals: { groups: @groups } %>
+

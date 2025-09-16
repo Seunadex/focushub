@@ -4,6 +4,18 @@
 
 import { application } from "./application"
 
+import ChatComposeController from "./chat_compose_controller"
+application.register("chat-compose", ChatComposeController)
+
+import ChatScrollController from "./chat_scroll_controller"
+application.register("chat-scroll", ChatScrollController)
+
+import ClipController from "./clip_controller"
+application.register("clip", ClipController)
+
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
 import FlashController from "./flash_controller"
 application.register("flash", FlashController)
 
@@ -12,6 +24,9 @@ application.register("hello", HelloController)
 
 import SidebarController from "./sidebar_controller"
 application.register("sidebar", SidebarController)
+
+import TabsController from "./tabs_controller"
+application.register("tabs", TabsController)
 
 import TaskController from "./task_controller"
 application.register("task", TaskController)

@@ -11,7 +11,7 @@ class TasksController < ApplicationController
     @pagy, @tasks = pagy(tasks.order(due_date: :desc))
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("task_list_content", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: params[:status] })
+        render turbo_stream: turbo_stream.update("task_list_content", partial: "tasks/task_list", locals: { tasks: @tasks, pagy: @pagy, source: params[:status] })
       end
       format.html
     end
@@ -21,12 +21,6 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
-  # On task creation
-  # Update the task list in the dashboard and tasks page
-  # Update the upcoming tasks section in the dashboard
-  # Update the task count in the dashboard (Done)
-  # Update the high priority, pending, completed task count in the task page (Done)
-  # remove modal
   def create
     result = TaskManager::Create.new(user: current_user, params: task_params).call
     if result.success?

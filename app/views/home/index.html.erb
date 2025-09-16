@@ -1,9 +1,36 @@
-<div class="flex flex-col min-h-[calc(100vh-20rem)] dark:bg-gray-900">
+<%# TODO: Fix the dark mode styles %>
+<section class="relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+    <div class="mt-4 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-blue-600 text-white shadow-lg ring-1 ring-white/10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 px-6 py-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">✨</span>
+          <p class="text-sm sm:text-base font-medium">
+            Welcome to FocusHub — track tasks, build habits, and stay accountable.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <%= link_to "Create free account", new_user_registration_path, class: "px-4 py-2 bg-white/90 text-gray-900 rounded-xl text-sm font-semibold hover:bg-white transition" %>
+          <%= link_to "Explore features", "#", class: "px-4 py-2.5 text-white/90 hover:text-white text-sm font-medium underline underline-offset-4" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 -top-24 -z-10 blur-3xl opacity-40">
+    <div class="mx-auto h-48 w-3/4 bg-gradient-to-r from-fuchsia-400 via-purple-400 to-blue-400 rounded-full"></div>
+  </div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10">
+    <svg class="w-full h-10 text-gray-200 dark:text-gray-800" preserveAspectRatio="none" viewBox="0 0 1200 40" fill="currentColor">
+      <path d="M0,20 C300,60 900,-20 1200,20 L1200,40 L0,40 Z"></path>
+    </svg>
+  </div>
+</section>
+<div class="flex flex-col">
   <main class="flex-grow">
-    <header class="bg-white dark:bg-gray-800">
-      <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 text-center transition-opacity duration-1000 ease-out animate-fadeIn">
-        <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white mb-6">Collaborative Task &amp; Habit Tracking</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">Join groups, build streaks, and stay motivated with real-time updates.</p>
+    <header class="bg-white">
+      <div class="max-w-7xl mx-auto py-10 sm:py-24 px-4 sm:px-6 lg:px-8 text-center transition-opacity duration-1000 ease-out animate-fadeIn">
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 mb-6">Collaborative Task &amp; Habit Tracking</h1>
+        <p class="text-lg sm:text-xl text-gray-600 mb-8">Join groups, build streaks, and stay motivated with real-time updates.</p>
         <%= link_to "Get Started Free", new_user_registration_path, class: "px-8 py-4 bg-purple-600 text-white text-lg rounded-2xl hover:bg-purple-700 transition" %>
       </div>
     </header>
@@ -30,7 +57,7 @@
       </div>
     </section>
 
-    <section class="py-16 bg-white dark:bg-gray-900">
+    <section class="py-10 bg-white dark:bg-gray-900">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <blockquote class="italic text-gray-700 dark:text-gray-300 animate-fadeIn transition-opacity duration-1000 delay-300">
           “FocusHub transformed how our team stays accountable. The real-time feed keeps us motivated every day!”
@@ -39,7 +66,7 @@
       </div>
     </section>
 
-    <section class="py-12 bg-purple-600 dark:bg-purple-700">
+    <section class="py-10 bg-purple-600 dark:bg-purple-700">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white transform transition duration-700 ease-in-out hover:scale-105">
         <h2 class="text-3xl font-bold mb-4">Ready to Boost Your Productivity?</h2>
         <p class="text-lg mb-6">Start tracking your tasks and habits with your team today.</p>
