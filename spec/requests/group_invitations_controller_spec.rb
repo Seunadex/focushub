@@ -36,7 +36,7 @@ RSpec.describe "GroupInvitationsController", type: :request do
 
     it "fails with invalid email and renders unprocessable" do
       post group_group_invitations_path(group), params: { group_invitation: { invitee_email: "invalid" } }
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       expect(flash.now[:alert] || flash[:alert]).to be_present
     end
   end

@@ -16,7 +16,7 @@ class GroupMessagesController < ApplicationController
         format.html { redirect_to group_path(@group) }
       end
     else
-      render index, status: :unprocessable_entity
+      render index, status: :unprocessable_content
     end
   end
 

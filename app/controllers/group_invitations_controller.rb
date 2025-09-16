@@ -31,7 +31,7 @@ class GroupInvitationsController < ApplicationController
       respond_to do |format|
         flash.now[:alert] = alert_message
         format.turbo_stream
-        format.html { render :new, status: :unprocessable_entity, layout: false }
+        format.html { render :new, status: :unprocessable_content, layout: false }
       end
       return
     end
