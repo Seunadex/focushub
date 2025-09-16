@@ -1,16 +1,16 @@
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 dark:bg-black/40" data-controller="turbo-modal" data-turbo-modal-target="modal" data-action="keyup@window->turbo-modal#closeWithEscape click@window->turbo-modal#closeWithClickOutside">
-  <div role="dialog" aria-modal="true" class="w-4/5 sm:w-full max-w-lg mx-auto bg-white p-6 rounded-lg shadow-xl transition-all">
+  <div role="dialog" aria-modal="true" class="w-4/5 sm:w-full max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-xl transition-all">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-semibold mb-2 dark:text-white">Invite Members to <%= group.name %></h3>
+      <h3 class="text-xl font-semibold mb-2">Invite Members to <%= group.name %></h3>
       <%= link_to lucide_icon("x", class: "h-4 w-4"), "", data: { action: "click->turbo-modal#close" }, class: "close" %>
     </div>
 
     <div class="space-y-4">
       <%= form_with model: [group, invitation], data: { turbo_frame: "modal" } do |f| %>
-        <%= f.label :invitee_email, "Invite by Email", class: "block mb-1 text-sm text-gray-600 dark:text-gray-300" %>
+        <%= f.label :invitee_email, "Invite by Email", class: "block mb-1 text-sm text-gray-600" %>
         <div class="flex gap-2">
-          <%= f.email_field :invitee_email, placeholder: "Enter email address", class: "border border-gray-300 block px-3 py-2 rounded text-sm text-gray-600 dark:text-gray-300 w-full" %>
-          <%= f.button type: "submit", class: "rounded items-center cursor-pointer p-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600", title: "Send invite", aria: { label: "Send invite" } do %>
+          <%= f.email_field :invitee_email, placeholder: "Enter email address", class: "border border-gray-300 block px-3 py-2 rounded text-sm text-gray-600 w-full" %>
+          <%= f.button type: "submit", class: "rounded items-center cursor-pointer p-3 bg-gray-100 hover:bg-gray-200", title: "Send invite", aria: { label: "Send invite" } do %>
             <%= lucide_icon("send", class: "h-4 w-4") %>
           <% end %>
         </div>
@@ -26,18 +26,19 @@
 
       <div>
         <h4 class="text-sm">Share Invite Link</h4>
-        <div class="flex gap-2">
-          <input type="text" class="text-sm border border-gray-300 block px-3 py-2 rounded text-sm text-gray-600 dark:text-gray-300 w-full" value="<%= shared_url %>" readonly
-                data-controller="clip" data-clip-target="source">
-          <button class="rounded items-center cursor-pointer p-3 bg-transparent border border-gray-300 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600" data-action="click->clip#copy"><%= lucide_icon("copy", class: "h-4 w-4") %></button>
+        <div class="flex gap-2" data-controller="clip" data-clip-message-value="Invite link copied to clipboard.">
+          <%= turbo_frame_tag "shared_url", class: "flex-1" do %>
+            <input name="shared_url" type="text" class="text-sm border border-gray-300 block px-3 py-2.5 rounded text-sm text-gray-600 w-full" value="<%= shared_url %>" readonly
+                   data-clip-target="source">
+          <% end %>
+          <button class="rounded items-center cursor-pointer p-3 bg-transparent border border-gray-300 hover:bg-gray-200" data-action="click->clip#copy"><%= lucide_icon("copy", class: "h-4 w-4") %></button>
           <%= button_to lucide_icon("rotate-cw", class: "h-4 w-4"), rotate_join_token_group_path(group),
                         method: :post,
                         data: { turbo_frame: "modal" },
-                        class: "rounded items-center cursor-pointer p-3 bg-transparent border border-gray-300 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600" %>
+                        class: "rounded items-center cursor-pointer p-3 bg-transparent border border-gray-300 hover:bg-gray-200" %>
         </div>
         <p class="text-xs text-muted mt-1">Anyone with this link can join the group.</p>
       </div>
     </div>
   </div>
 </div>
-

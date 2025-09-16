@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_07_122431) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_16_084508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -97,6 +97,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_122431) do
     t.index ["user_id"], name: "index_group_memberships_on_user_id"
   end
 
+  create_table "group_messages", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.bigint "thread_id"
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "created_at"], name: "index_group_messages_on_group_id_and_created_at"
+    t.index ["group_id"], name: "index_group_messages_on_group_id"
+    t.index ["thread_id"], name: "index_group_messages_on_thread_id"
+    t.index ["user_id"], name: "index_group_messages_on_user_id"
+  end
+
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -119,6 +133,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_122431) do
     t.date "completed_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["habit_id", "completed_on"], name: "index_habit_completions_on_habit_id_and_completed_on"
     t.index ["habit_id"], name: "index_habit_completions_on_habit_id"
   end
 
@@ -308,6 +323,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_122431) do
   add_foreign_key "group_invitations", "users", column: "inviter_id"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
+  add_foreign_key "group_messages", "groups"
+  add_foreign_key "group_messages", "users"
   add_foreign_key "habit_completions", "habits"
   add_foreign_key "habits", "users"
   add_foreign_key "messages", "groups"

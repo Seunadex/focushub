@@ -1,6 +1,5 @@
 module PagyHelper
   include Pagy::Frontend
-
   def pagy_nav(pagy, page_param_name:, turbo_frame: nil, **options)
     css_classes = options[:class] || "flex items-center space-x-2 mt-5"
 

@@ -2,7 +2,7 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t focushub .
+# docker build -t demo .
 # docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name demo demo
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
@@ -27,8 +27,7 @@ RUN apt-get update -qq && \
 
 # Set production environment
 ENV BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/rails/vendor/bundle" \
-    BUNDLE_APP_CONFIG="/rails/.bundle" \
+    BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
     RAILS_ENV="production"
 
@@ -87,7 +86,6 @@ COPY --from=build /rails /rails
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R 1000:1000 db log storage tmp
-RUN chown -R 1000:1000 /rails
 USER 1000:1000
 
 # Entrypoint prepares the database.

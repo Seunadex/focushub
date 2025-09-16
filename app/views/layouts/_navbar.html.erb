@@ -18,7 +18,7 @@
               <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-10 h-10 rounded-full mx-auto" %>
             <% else %>
               <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-lg font-semibold mx-auto dark:bg-slate-900 dark:text-gray-400">
-                <span class="sidebar-text hidden md:inline"><%= current_user.decorate.abbreviated_name %></span>
+                <span class="sidebar-text hidden md:inline"><%= current_user.decorate.abbreviated_name || lucide_icon("user") %></span>
               </div>
             <% end %>
             </button>

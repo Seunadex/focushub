@@ -15,6 +15,7 @@
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%= favicon_link_tag asset_path("favicon.svg"), type: "image/svg+xml" %>
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
@@ -30,7 +31,9 @@
         <%= render "layouts/sidebar" %>
       <% end %>
       <div class="w-full">
-        <%= render "layouts/navbar" %>
+        <% if user_signed_in? %>
+          <%= render "layouts/navbar" %>
+        <% end %>
         <%= yield %>
       </div>
     </main>

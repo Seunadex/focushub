@@ -60,4 +60,51 @@ RSpec.describe "HabitsController", type: :request do
       }.to change(Habit, :count).by(-1)
     end
   end
+
+  describe "PATCH /habits/:id/archive_toggle" do
+    it "archives an active habit" do
+      expect(habit.active?).to be true
+
+      patch archive_toggle_habit_path(habit)
+
+      expect(response).to have_http_status(:redirect)
+      expect(habit.reload.active?).to be false
+      expect(flash[:notice]).to eq("Habit archived successfully.")
+    end
+
+    it "restores an archived habit" do
+      habit.update!(active: false)
+      expect(habit.active?).to be false
+
+      patch archive_toggle_habit_path(habit)
+
+      expect(response).to have_http_status(:redirect)
+      expect(habit.reload.active?).to be true
+      expect(flash[:notice]).to eq("Habit restored successfully.")
+    end
+  end
+
+  describe "POST /habits/:id/complete" do
+    it "marks a habit as complete" do
+      expect {
+        post complete_habit_path(habit), params: { completed: true }
+      }.to change { habit.habit_completions.where(completed_on: Date.current).count }.by(1)
+
+      expect(response).to have_http_status(:redirect)
+      expect(flash[:notice]).to eq("'#{habit.title}' marked as complete.")
+    end
+
+    it "marks a habit as incomplete (undo)" do
+      # Pre-complete for today
+      habit.complete!(Date.current)
+      expect(habit.habit_completions.where(completed_on: Date.current).count).to eq(1)
+
+      expect {
+        post complete_habit_path(habit), params: { completed: false }
+      }.to change { habit.habit_completions.where(completed_on: Date.current).count }.by(-1)
+
+      expect(response).to have_http_status(:redirect)
+      expect(flash[:notice]).to eq("'#{habit.title}' marked as incomplete.")
+    end
+  end
 end

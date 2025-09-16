@@ -2,6 +2,7 @@ class Group < ApplicationRecord
   has_many :group_memberships, dependent: :destroy
   has_many :users, through: :group_memberships
   has_many :group_invitations, dependent: :destroy
+  has_many :group_messages, dependent: :destroy
 
   validates :name, presence: true
   validates :slug, uniqueness: true, presence: true
@@ -14,12 +15,15 @@ class Group < ApplicationRecord
   def ensure_join_token!
     return join_token if join_token.present?
 
-    update!(join_token: SecureRandom.urlsafe_base64(24))
-    join_token
+    token = SecureRandom.urlsafe_base64(24)
+    update_column(:join_token, token)
+    token
   end
 
-  def rotate_join_token
-    update!(join_token: SecureRandom.urlsafe_base64(24))
+  def rotate_join_token!
+    token = SecureRandom.urlsafe_base64(24)
+    update_column(:join_token, token)
+    token
   end
 
   def role_for(user)

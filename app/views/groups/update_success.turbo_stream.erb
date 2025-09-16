@@ -1,4 +1,5 @@
 <%= turbo_stream.update "modal", "" %>
 <%= turbo_stream.prepend "flash", partial: "shared/flash" %>
 <%= turbo_stream.replace "group_#{@group.id}", partial: "groups/group", locals: { group: @group } %>
-
+<%= turbo_stream.update "group_name", @group.name%>
+<%= turbo_stream.update "group_desc", @group.description%>

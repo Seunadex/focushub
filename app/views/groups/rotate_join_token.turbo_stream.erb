@@ -1,0 +1,5 @@
+<%= turbo_stream.update "flash", partial: "shared/flash" %>
+<%= turbo_stream.update "shared_url" do %>
+  <input name="shared_url" type="text" class="text-sm border border-gray-300 block px-3 py-2.5 rounded text-sm text-gray-600 w-full" value="<%= invite_url(token: @group.ensure_join_token!) %>" readonly
+         data-clip-target="source">
+<% end %>

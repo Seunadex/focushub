@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_group, only: [ :edit, :update, :show, :destroy ]
+  before_action :set_group, only: [ :edit, :update, :show, :destroy, :rotate_join_token ]
   before_action :authorize_index!, only: [ :index ]
   before_action :authorize_create!, only: [ :new, :create ]
   before_action :authorize_show!, only: [ :show ]
@@ -61,6 +61,23 @@ class GroupsController < ApplicationController
     else
       respond_to do |format|
         format.turbo_stream { flash.now[:alert] = "Failed to delete group."; render :destroy_failure }
+      end
+    end
+  end
+
+  def rotate_join_token
+    token = @group.rotate_join_token!
+    if token
+      respond_to do |format|
+        flash.now[:notice] = "Join token rotated successfully."
+        format.turbo_stream
+        format.html { redirect_to group_path(@group), notice: "Join token rotated successfully." }
+      end
+    else
+      respond_to do |format|
+        flash.now[:alert] = "Failed to rotate join token."
+        format.turbo_stream { render :show }
+        format.html { redirect_to group_path(@group), alert: "Failed to rotate join token." }
       end
     end
   end

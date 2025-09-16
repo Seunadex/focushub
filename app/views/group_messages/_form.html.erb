@@ -1,0 +1,19 @@
+<%= form_with model: [group, message],
+              data: { controller: "chat-compose", action: "turbo:submit-end->chat-compose#reset" } do |f| %>
+  <div class="flex space-x-2 pt-5">
+    <%= f.textarea :body,
+      row: 1,
+      autocomplete: "off",
+      placeholder: "Type a message…",
+      data: { chat_compose_target: "input", action: "keydown->chat-compose#handleKey" },
+      class: "w-full resize-none flex items-center rounded-md border border-slate-300 dark:bg-slate-950 px-3 pt-1 leading-relaxed text-slate-900 placeholder-slate-400 shadow-inner outline-none transition focus:border-transparent focus:ring-2 focus:ring-violet-500 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-100 h-10" %>
+
+    <%= f.button type: "submit",
+                 class: "inline-flex items-center justify-center rounded-md bg-violet-600 text-white shadow transition hover:bg-violet-700 active:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-500 disabled:cursor-not-allowed disabled:opacity-50 py-2 px-3 cursor-pointer",
+                 title: "Send",
+                 aria: { label: "Send" } do %>
+      <span class="sr-only">Send</span>
+      <%= lucide_icon("send", class: "h-5 w-5") %>
+    <% end %>
+  </div>
+<% end %>
