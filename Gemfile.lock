@@ -1,3 +1,9 @@
+PATH
+  remote: ../method_tracer
+  specs:
+    method_tracer (0.1.0)
+      logger
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -554,6 +560,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   lucide-rails (~> 0.7.1)
+  method_tracer!
   mission_control-jobs
   pagy
   pg (~> 1.6)

@@ -1,4 +1,5 @@
 class HabitsController < ApplicationController
+  include MethodTracer
   before_action :authenticate_user!
   before_action :set_habit, only: [ :archive_toggle, :complete, :destroy, :edit, :update ]
 
@@ -138,4 +139,5 @@ class HabitsController < ApplicationController
     flash[:alert] = "Habit not found."
     redirect_to habits_path
   end
+  trace_methods :index, :create, :update, :archive_toggle, :complete, :destroy, auto_output: true
 end

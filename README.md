@@ -1,4 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/Seunadex/focushub/badge.svg?branch=main&refresh=1)](https://coveralls.io/github/Seunadex/focushub?branch=main)
+[![CI](https://github.com/Seunadex/focushub/actions/workflows/ci.yml/badge.svg)](https://github.com/Seunadex/focushub/actions/workflows/ci.yml)
 # FocusHub
 
 Tasks + Habits in one fast, motivating dashboard. Built with **Rails 8**, **Hotwire (Turbo + Stimulus)**, and **Tailwind CSS**. Track daily work, build routines, celebrate streaks, and keep each other accountable in **Groups**.
