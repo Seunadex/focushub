@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/Seunadex/method_tracer.git
-  revision: 2d33d5b792a2314fe8ac90ebebf1e0e3f047d4ef
+  revision: 28e9baeb6eb4463bc9a0607530cb68423a4da9a2
   branch: main
   specs:
-    method_tracer (0.1.0)
+    method_tracer (0.1.1)
       logger
 
 GEM
