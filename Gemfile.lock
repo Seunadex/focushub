@@ -1,5 +1,7 @@
-PATH
-  remote: ../method_tracer
+GIT
+  remote: https://github.com/Seunadex/method_tracer.git
+  revision: 2d33d5b792a2314fe8ac90ebebf1e0e3f047d4ef
+  branch: main
   specs:
     method_tracer (0.1.0)
       logger

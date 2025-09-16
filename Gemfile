@@ -58,7 +58,7 @@ group :development, :test do
   gem "rspec-rails", "~> 8.0.0"
   gem "table_print"
   gem "simplecov", require: false
-  gem "method_tracer", path: "../method_tracer"
+  gem "method_tracer", git: "https://github.com/Seunadex/method_tracer.git", branch: "main"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
